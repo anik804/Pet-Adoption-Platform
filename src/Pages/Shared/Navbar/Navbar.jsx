@@ -2,6 +2,7 @@ import React from "react";
 import logo from "../../../assets/logo.png";
 import { motion } from "framer-motion";
 import MotionNavLink from "./MotionNavLink";
+import { Link } from "react-router";
 
 
 const Navbar = () => {
@@ -102,8 +103,8 @@ const navItems = (
         <ul className="menu menu-horizontal px-1">{navItems}</ul>
       </div>
       <div className="navbar-end">
-        <a className="btn btn-soft btn-warning">Register</a>
-        <a className="btn btn-soft btn-success ml-4">Login</a>
+        <Link to="register" className="btn btn-soft btn-warning">Register</Link>
+        <Link to="login" className="btn btn-soft btn-success ml-4">Login</Link>
       </div>
     </div>
   );
