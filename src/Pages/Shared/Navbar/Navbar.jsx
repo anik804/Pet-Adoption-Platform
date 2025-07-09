@@ -3,6 +3,7 @@ import logo from "../../../assets/logo.png";
 import { motion } from "framer-motion";
 import MotionNavLink from "./MotionNavLink";
 import { Link } from "react-router";
+import ThemeToggleButton from "../../../Context/Theme Context/ThemeToggleButton";
 
 
 const Navbar = () => {
@@ -103,7 +104,8 @@ const navItems = (
         <ul className="menu menu-horizontal px-1">{navItems}</ul>
       </div>
       <div className="navbar-end">
-        <Link to="register" className="btn btn-soft btn-warning">Register</Link>
+        <ThemeToggleButton></ThemeToggleButton>
+        <Link to="register" className="btn btn-soft btn-warning ml-4">Register</Link>
         <Link to="login" className="btn btn-soft btn-success ml-4">Login</Link>
       </div>
     </div>
