@@ -29,7 +29,7 @@ const stories = [
 const SuccessStories = () => {
   return (
     <motion.section
-      className="w-11/12 md:w-3/4 max-w-7xl mb-4 mx-auto py-16 px-6 rounded-xl shadow-xl mt-10"
+      className="max-w-7xl mb-4 mx-auto py-16 px-6 shadow-xl mt-10"
       initial={{ opacity: 1 }}
       animate={{
         backgroundColor: [

@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import LogoSection from "../../Shared/Logo Section/LogoSection";
 import bg from "../../../assets/register_bg.jpg";
 import useAuth from "../../../Hooks/useAuth";
-import { Link } from "react-router";
+import { Link, useNavigate, useLocation } from "react-router";
 import SocialLogin from "../Social Login/SocialLogin";
 
 const Register = () => {
@@ -15,20 +15,21 @@ const Register = () => {
   } = useForm();
 
   const { createUser } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   const [authError, setAuthError] = useState("");
   const [imageType, setImageType] = useState("file"); // file or url
 
   const onSubmit = async (data) => {
     setAuthError("");
-    //
-    // console.log(createUser);
-    //
     try {
       let image;
-      createUser(data.email, data.password)
+      await createUser(data.email, data.password)
         .then((result) => {
           console.log("User created successfully:", result);
+          navigate(from, { replace: true });
         })
         .catch((error) => {
           throw new Error("Failed to create user: " + error.message);

@@ -2,8 +2,9 @@ import React from "react";
 import LogoSection from "../../Shared/Logo Section/LogoSection";
 import bg from "../../../assets/login_bg.jpg";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { Link, useNavigate, useLocation } from "react-router";
 import SocialLogin from "../Social Login/SocialLogin";
+import useAuth from "../../../Hooks/useAuth";
 
 const Login = () => {
   const {
@@ -12,8 +13,19 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
+  const { signIn } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+
   const onSubmit = (data) => {
-    console.log("Form submitted : ", data);
+    signIn(data.email, data.password)
+      .then(() => {
+        navigate(from, { replace: true });
+      })
+      .catch((error) => {
+        console.error("Login failed:", error);
+      });
   };
 
   return (
@@ -74,7 +86,7 @@ const Login = () => {
           </div>
         </div>
       </form>
-      <SocialLogin></SocialLogin>
+      <SocialLogin />
     </div>
   );
 };

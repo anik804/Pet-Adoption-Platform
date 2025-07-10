@@ -1,13 +1,18 @@
 import React from "react";
+import { useNavigate, useLocation } from "react-router";
 import useAuth from "../../../Hooks/useAuth";
 
 const SocialLogin = () => {
   const { signInWithGoogle , signInWithGithub } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   const handleGoogleLogin = () => {
     signInWithGoogle()
       .then((result) => {
         console.log("Google login successful:", result);
+        navigate(from, { replace: true });
       })
       .catch((error) => {
         console.error("Google login failed:", error);
@@ -19,6 +24,7 @@ const SocialLogin = () => {
     signInWithGithub()
       .then((result) => {
         console.log("GitHub login successful:", result.user);
+        navigate(from, { replace: true });
       })
       .catch((error) => {
         console.error("GitHub login failed:", error.message);
@@ -87,3 +93,4 @@ const SocialLogin = () => {
 };
 
 export default SocialLogin;
+
