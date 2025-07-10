@@ -37,7 +37,7 @@ const Navbar = () => {
         <MotionNavLink to="/pets">Pets</MotionNavLink>
       </li>
       <li className="text-xl">
-        <MotionNavLink to="/donations">Donation Campaigns</MotionNavLink>
+        <MotionNavLink to="/donation-campaigns">Donation Campaigns</MotionNavLink>
       </li>
     </>
   );
