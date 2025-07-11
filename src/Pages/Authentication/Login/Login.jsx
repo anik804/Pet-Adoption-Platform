@@ -18,9 +18,38 @@ const Login = () => {
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
 
+  const saveUserToBackend = async (user) => {
+    try {
+      console.log('Saving user to backend:', user.email);
+      const response = await fetch(`http://localhost:3000/users/${user.email}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: user.email,
+          displayName: user.displayName || '',
+          photoURL: user.photoURL || '',
+          role: 'user', // default role
+        }),
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Failed to save user, server responded with:', errorText);
+      } else {
+        console.log('User saved successfully');
+      }
+    } catch (error) {
+      console.error('Failed to save user:', error);
+    }
+  };
+
   const onSubmit = (data) => {
     signIn(data.email, data.password)
-      .then(() => {
+      .then(async (result) => {
+        if (result.user) {
+          await saveUserToBackend(result.user);
+        }
         navigate(from, { replace: true });
       })
       .catch((error) => {

@@ -10,7 +10,6 @@ const Register = () => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm();
 
@@ -26,14 +25,35 @@ const Register = () => {
     setAuthError("");
     try {
       let image;
-      await createUser(data.email, data.password)
-        .then((result) => {
-          console.log("User created successfully:", result);
-          navigate(from, { replace: true });
-        })
-        .catch((error) => {
-          throw new Error("Failed to create user: " + error.message);
-        });
+      const result = await createUser(data.email, data.password);
+      if (result.user) {
+        // Save user to backend
+        try {
+          console.log('Saving user to backend:', result.user.email);
+          const response = await fetch(`http://localhost:3000/users/${result.user.email}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              email: result.user.email,
+              displayName: data.fullName,
+              photoURL: data.imageURL || '',
+              role: 'user', // default role
+            }),
+          });
+          if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Failed to save user, server responded with:', errorText);
+          } else {
+            console.log('User saved successfully');
+          }
+        } catch (error) {
+          console.error('Failed to save user:', error);
+        }
+      }
+      navigate(from, { replace: true });
+
       if (imageType === "file") {
         image = data.imageFile[0];
         if (!image) throw new Error("No file selected");

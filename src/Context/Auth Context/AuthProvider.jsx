@@ -8,6 +8,7 @@ const githubProvider = new GithubAuthProvider();
 const AuthProvider = ({children}) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [role, setRole] = useState(null);
 
   const createUser = (email,password) =>{
     setLoading(true);
@@ -37,6 +38,21 @@ const AuthProvider = ({children}) => {
   useEffect(()=>{
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+      if(currentUser && currentUser.email){
+        // Fetch user role from backend
+        fetch(`http://localhost:3000/users?email=${currentUser.email}`)
+          .then(res => res.json())
+          .then(data => {
+            if(data && data.length > 0){
+              setRole(data[0].role || null);
+            } else {
+              setRole(null);
+            }
+          })
+          .catch(() => setRole(null));
+      } else {
+        setRole(null);
+      }
       setLoading(false);
     });
     return () => {
@@ -46,6 +62,7 @@ const AuthProvider = ({children}) => {
 
   const authInfo = {
     user,
+    role,
     loading,
     createUser,
     signIn,

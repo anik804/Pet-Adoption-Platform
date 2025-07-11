@@ -7,7 +7,7 @@ import { useNavigate } from "react-router";
 const fetchPets = async ({ pageParam = 1, queryKey }) => {
   const [_key, { search, category }] = queryKey;
   const res = await axios.get(
-    `http://localhost:3000/Pets?page=${pageParam}&limit=9&search=${search}&category=${category}`
+    `http://localhost:3000/pets?page=${pageParam}&limit=9&search=${search}&category=${category}`
   );
   return res.data;
 };
@@ -76,7 +76,7 @@ const PetListing = () => {
               className="border rounded-lg p-4 shadow hover:shadow-md"
             >
               <img
-                src={pet.image}
+                src={pet.image || pet.petImage}
                 alt={pet.name}
                 className="w-full h-48 object-cover rounded-md mb-4"
               />

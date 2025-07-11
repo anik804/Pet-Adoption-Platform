@@ -10,8 +10,33 @@ const SocialLogin = () => {
 
   const handleGoogleLogin = () => {
     signInWithGoogle()
-      .then((result) => {
+      .then(async (result) => {
         console.log("Google login successful:", result);
+        // Save user to backend
+        if (result.user) {
+          try {
+            const response = await fetch(`http://localhost:3000/users/${result.user.email}`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            body: JSON.stringify({
+              email: result.user.email,
+              displayName: result.user.displayName || '',
+              photoURL: result.user.photoURL || '',
+              // Do not overwrite role to preserve admin role
+            }),
+            });
+            if (!response.ok) {
+              const errorText = await response.text();
+              console.error('Failed to save user, server responded with:', errorText);
+            } else {
+              console.log('User saved successfully');
+            }
+          } catch (error) {
+            console.error('Failed to save user:', error);
+          }
+        }
         navigate(from, { replace: true });
       })
       .catch((error) => {
@@ -22,8 +47,33 @@ const SocialLogin = () => {
   // github login
   const handleGithubLogin = () => {
     signInWithGithub()
-      .then((result) => {
+      .then(async (result) => {
         console.log("GitHub login successful:", result.user);
+        // Save user to backend
+        if (result.user) {
+          try {
+            const response = await fetch(`http://localhost:3000/users/${result.user.email}`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                email: result.user.email,
+                displayName: result.user.displayName || '',
+                photoURL: result.user.photoURL || '',
+                role: 'user', // default role
+              }),
+            });
+            if (!response.ok) {
+              const errorText = await response.text();
+              console.error('Failed to save user, server responded with:', errorText);
+            } else {
+              console.log('User saved successfully');
+            }
+          } catch (error) {
+            console.error('Failed to save user:', error);
+          }
+        }
         navigate(from, { replace: true });
       })
       .catch((error) => {

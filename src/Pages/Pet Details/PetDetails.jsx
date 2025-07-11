@@ -26,7 +26,7 @@ const PetDetails = () => {
     <div className="max-w-4xl mx-auto px-6 py-10">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
         <img
-          src={pet.image}
+          src={pet.image || pet.petImage}
           alt={pet.name}
           className="w-full rounded-xl shadow-md"
         />
