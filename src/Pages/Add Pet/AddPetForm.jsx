@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import { useState } from "react";
 import Select from "react-select";
 import * as Yup from "yup";
-import useAuth from "../../Hooks/useAuth"; // ✅ Get user context
+import useAuth from "../../Hooks/useAuth";
 
 // TipTap Editor
 import { EditorContent, useEditor } from "@tiptap/react";
@@ -12,7 +12,7 @@ import StarterKit from "@tiptap/starter-kit";
 function AddPetForm({ initialValues, onSubmit }) {
   const [uploading, setUploading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
-  const { user } = useAuth(); // ✅ Get logged-in user
+  const { user } = useAuth();
 
   const editor = useEditor({
     extensions: [StarterKit],
@@ -58,7 +58,7 @@ function AddPetForm({ initialValues, onSubmit }) {
               petLocation: values.petLocation,
               shortDescription: values.shortDescription,
               longDescription: values.longDescription,
-              userId: user.uid, // ✅ Send userId
+              userId: user.uid,
             });
 
             alert("Pet added successfully!");
@@ -77,11 +77,11 @@ function AddPetForm({ initialValues, onSubmit }) {
     setUploading(true);
     const data = new FormData();
     data.append("file", file);
-    data.append("upload_preset", "Pet-Adoption-User"); // Replace with your actual preset
+    data.append("upload_preset", "Pet-Adoption-User");
 
     try {
       const res = await axios.post(
-        "https://api.cloudinary.com/v1_1/dyyikpmpo/image/upload", // Replace with your cloud name
+        "https://api.cloudinary.com/v1_1/dyyikpmpo/image/upload",
         data
       );
       formik.setFieldValue("petImage", res.data.secure_url);
@@ -102,53 +102,64 @@ function AddPetForm({ initialValues, onSubmit }) {
   ];
 
   return (
-    <form onSubmit={formik.handleSubmit} className="space-y-6 max-w-xl mx-auto p-4 bg-white shadow rounded">
+    <form
+      onSubmit={formik.handleSubmit}
+      className="space-y-6 max-w-3xl mx-auto bg-white shadow-lg rounded-lg md:p-8"
+    >
+      <h2 className="text-xl md:text-2xl font-bold text-center">Add New Pet</h2>
+
       {/* Image Upload */}
       <div>
-        <label className="font-medium block">Pet Image</label>
-        <input type="file" accept="image/*" onChange={onImageChange} className="mt-1" />
-        {uploading && <p>Uploading...</p>}
-        {formik.values.petImage && <img src={formik.values.petImage} alt="preview" className="mt-2 w-32" />}
+        <label className="font-medium block mb-1">Pet Image</label>
+        <input type="file" accept="image/*" onChange={onImageChange} />
+        {uploading && <p className="text-sm text-gray-500 mt-1">Uploading...</p>}
+        {formik.values.petImage && (
+          <img
+            src={formik.values.petImage}
+            alt="preview"
+            className="mt-3 w-28 h-28 rounded-md object-cover border"
+          />
+        )}
         {formik.touched.petImage && formik.errors.petImage && (
-          <div className="text-red-500">{formik.errors.petImage}</div>
+          <div className="text-red-500 text-sm mt-1">{formik.errors.petImage}</div>
         )}
       </div>
 
       {/* Pet Name */}
       <div>
-        <label className="font-medium block">Pet Name</label>
+        <label className="font-medium block mb-1">Pet Name</label>
         <input
           type="text"
           name="petName"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.petName}
-          className="w-full border rounded px-2 py-1"
+          className="w-full border rounded px-3 py-2"
         />
         {formik.touched.petName && formik.errors.petName && (
-          <div className="text-red-500">{formik.errors.petName}</div>
+          <div className="text-red-500 text-sm mt-1">{formik.errors.petName}</div>
         )}
       </div>
 
       {/* Pet Age */}
       <div>
-        <label className="font-medium block">Pet Age</label>
+        <label className="font-medium block mb-1">Pet Age</label>
         <input
           type="number"
           name="petAge"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.petAge}
-          className="w-full border rounded px-2 py-1"
+          className="w-full border rounded px-3 py-2"
         />
         {formik.touched.petAge && formik.errors.petAge && (
-          <div className="text-red-500">{formik.errors.petAge}</div>
+          <div className="text-red-500 text-sm mt-1">{formik.errors.petAge}</div>
         )}
       </div>
 
       {/* Category */}
       <div>
-        <label className="font-medium block">Category</label>
+        <label className="font-medium block mb-1">Pet Category</label>
         <Select
           options={categories}
           value={formik.values.petCategory}
@@ -156,62 +167,64 @@ function AddPetForm({ initialValues, onSubmit }) {
           onBlur={() => formik.setFieldTouched("petCategory", true)}
         />
         {formik.touched.petCategory && formik.errors.petCategory && (
-          <div className="text-red-500">{formik.errors.petCategory}</div>
+          <div className="text-red-500 text-sm mt-1">{formik.errors.petCategory}</div>
         )}
       </div>
 
       {/* Location */}
       <div>
-        <label className="font-medium block">Location</label>
+        <label className="font-medium block mb-1">Location</label>
         <input
           type="text"
           name="petLocation"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.petLocation}
-          className="w-full border rounded px-2 py-1"
+          className="w-full border rounded px-3 py-2"
         />
         {formik.touched.petLocation && formik.errors.petLocation && (
-          <div className="text-red-500">{formik.errors.petLocation}</div>
+          <div className="text-red-500 text-sm mt-1">{formik.errors.petLocation}</div>
         )}
       </div>
 
       {/* Short Description */}
       <div>
-        <label className="font-medium block">Short Description</label>
+        <label className="font-medium block mb-1">Short Description</label>
         <input
           type="text"
           name="shortDescription"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.shortDescription}
-          className="w-full border rounded px-2 py-1"
+          className="w-full border rounded px-3 py-2"
         />
         {formik.touched.shortDescription && formik.errors.shortDescription && (
-          <div className="text-red-500">{formik.errors.shortDescription}</div>
+          <div className="text-red-500 text-sm mt-1">{formik.errors.shortDescription}</div>
         )}
       </div>
 
       {/* Long Description */}
       <div>
         <label className="font-medium block mb-1">Long Description</label>
-        <div className="border p-2 rounded min-h-[150px]">
+        <div className="border rounded px-2 py-2 min-h-[150px]">
           <EditorContent editor={editor} />
         </div>
         {formik.touched.longDescription && formik.errors.longDescription && (
-          <div className="text-red-500 mt-1">{formik.errors.longDescription}</div>
+          <div className="text-red-500 text-sm mt-1">{formik.errors.longDescription}</div>
         )}
       </div>
 
-      {/* Submit Button */}
-      {errorMsg && <div className="text-red-600">{errorMsg}</div>}
-      <button
-        type="submit"
-        disabled={formik.isSubmitting}
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-      >
-        {formik.isSubmitting ? "Submitting..." : "Add Pet"}
-      </button>
+      {/* Submit */}
+      {errorMsg && <div className="text-red-600 text-sm">{errorMsg}</div>}
+      <div className="flex justify-center">
+        <button
+          type="submit"
+          disabled={formik.isSubmitting}
+          className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition"
+        >
+          {formik.isSubmitting ? "Submitting..." : "Add Pet"}
+        </button>
+      </div>
     </form>
   );
 }
