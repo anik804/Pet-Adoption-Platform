@@ -63,7 +63,6 @@ const CallToAction = () => {
       >
         <button
           className="bg-pink-600 hover:bg-pink-700 text-white font-semibold py-3 px-8 rounded-md transition-colors duration-300"
-          onClick={() => alert("Navigate to Adopt Pets page!")}
         >
           Adopt Now
         </button>

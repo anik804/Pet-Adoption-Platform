@@ -25,7 +25,7 @@ const UserDashboard = () => {
       {/* Sidebar */}
       <aside className="w-64 bg-white shadow-md">
         <div className="p-6 text-xl font-bold border-b border-gray-200">
-          User Dashboard
+          Dashboard
         </div>
         <nav className="mt-6">
           <ul>
@@ -61,19 +61,20 @@ const UserDashboard = () => {
             </li>
             {role === 'admin' && (
               <>
+              <h1 className="text-center border-2 mx-2 my-2 py-2 font-bold rounded-2xl">Admin Panel</h1>
                 <li>
                   <NavLink to="/admin/users" className={navLinkClass}>
-                    Admin: Manage Users
+                    Manage Users
                   </NavLink>
                 </li>
                 <li>
                   <NavLink to="/admin/all-pets" className={navLinkClass}>
-                    Admin: All Pets
+                    All Pets
                   </NavLink>
                 </li>
                 <li>
                   <NavLink to="/admin/all-donations" className={navLinkClass}>
-                    Admin: All Donations
+                    All Donations
                   </NavLink>
                 </li>
               </>
