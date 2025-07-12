@@ -3,6 +3,9 @@ import { NavLink, Outlet } from 'react-router';
 import useAuth from '../../Hooks/useAuth';
 import AddPetForm from '../Add Pet/AddPetForm';
 
+
+// const { user } = useAuth();
+
 export const AddPet = () => {
   return (
     <div className="p-4">
@@ -13,7 +16,7 @@ export const AddPet = () => {
 };
 
 const UserDashboard = () => {
-  const { role } = useAuth();
+  const { role,user } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const navLinkClass = ({ isActive }) =>
@@ -121,9 +124,9 @@ const UserDashboard = () => {
           >
             &#9776;
           </button>
-          <h1 className="text-xl font-bold ml-2 md:ml-0">Dashboard</h1>
+          {/* <h1 className="text-xl font-bold ml-2 md:ml-0">Dashboard</h1> */}
           {/* Placeholder for user info or actions */}
-          <div>User Info</div>
+          {/* <div>{user.name}</div> */}
         </header>
 
         {/* Page content */}

@@ -42,7 +42,7 @@ const DonationCampaignsPage = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {data?.pages?.map((page) =>
-          page.campaigns.map((campaign) => (
+          page.campaigns?.map((campaign) => (
             <div
               key={campaign._id}
               className="border rounded-xl shadow-md bg-white p-4 flex flex-col justify-between"
@@ -55,7 +55,7 @@ const DonationCampaignsPage = () => {
               <div className="mt-4">
                 <h2 className="text-xl font-semibold">{campaign.petName}</h2>
                 <p className="text-gray-600 text-sm mt-1">
-                  Max Donation: <span className="font-medium text-black">${campaign.maxDonationAmount}</span>
+                  Max Donation: <span className="font-medium text-black">${campaign.maxDonation}</span>
                 </p>
                 <p className="text-gray-600 text-sm">
                   Donated: <span className="font-medium text-green-700">${campaign.donatedAmount}</span>

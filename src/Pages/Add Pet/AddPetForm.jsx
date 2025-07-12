@@ -31,6 +31,8 @@ function AddPetForm({ initialValues, onSubmit }) {
       petLocation: "",
       shortDescription: "",
       longDescription: "",
+      petColor: "",
+      petBreed: "",
     },
     validationSchema: Yup.object({
       petName: Yup.string().required("Required"),
@@ -40,6 +42,8 @@ function AddPetForm({ initialValues, onSubmit }) {
       shortDescription: Yup.string().required("Required"),
       longDescription: Yup.string().required("Required"),
       petImage: Yup.string().required("Required"),
+      petColor: Yup.string().required("Required"),
+      petBreed: Yup.string().required("Required"),
     }),
     onSubmit: onSubmit
       ? onSubmit
@@ -58,6 +62,8 @@ function AddPetForm({ initialValues, onSubmit }) {
               petLocation: values.petLocation,
               shortDescription: values.shortDescription,
               longDescription: values.longDescription,
+              petColor: values.petColor,
+              petBreed: values.petBreed,
               userId: user.uid,
             });
 
@@ -108,7 +114,7 @@ function AddPetForm({ initialValues, onSubmit }) {
     >
       <h2 className="text-xl md:text-2xl font-bold text-center">Add New Pet</h2>
 
-      {/* Image Upload */}
+      {/* Pet Image */}
       <div>
         <label className="font-medium block mb-1">Pet Image</label>
         <input type="file" accept="image/*" onChange={onImageChange} />
@@ -157,7 +163,7 @@ function AddPetForm({ initialValues, onSubmit }) {
         )}
       </div>
 
-      {/* Category */}
+      {/* Pet Category */}
       <div>
         <label className="font-medium block mb-1">Pet Category</label>
         <Select
@@ -171,7 +177,7 @@ function AddPetForm({ initialValues, onSubmit }) {
         )}
       </div>
 
-      {/* Location */}
+      {/* Pet Location */}
       <div>
         <label className="font-medium block mb-1">Location</label>
         <input
@@ -184,6 +190,38 @@ function AddPetForm({ initialValues, onSubmit }) {
         />
         {formik.touched.petLocation && formik.errors.petLocation && (
           <div className="text-red-500 text-sm mt-1">{formik.errors.petLocation}</div>
+        )}
+      </div>
+
+      {/* Pet Color */}
+      <div>
+        <label className="font-medium block mb-1">Color</label>
+        <input
+          type="text"
+          name="petColor"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.petColor}
+          className="w-full border rounded px-3 py-2"
+        />
+        {formik.touched.petColor && formik.errors.petColor && (
+          <div className="text-red-500 text-sm mt-1">{formik.errors.petColor}</div>
+        )}
+      </div>
+
+      {/* Pet Breed */}
+      <div>
+        <label className="font-medium block mb-1">Breed</label>
+        <input
+          type="text"
+          name="petBreed"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.petBreed}
+          className="w-full border rounded px-3 py-2"
+        />
+        {formik.touched.petBreed && formik.errors.petBreed && (
+          <div className="text-red-500 text-sm mt-1">{formik.errors.petBreed}</div>
         )}
       </div>
 
@@ -206,7 +244,7 @@ function AddPetForm({ initialValues, onSubmit }) {
       {/* Long Description */}
       <div>
         <label className="font-medium block mb-1">Long Description</label>
-        <div className="border rounded px-2 py-2 min-h-[150px]">
+        <div className="border rounded px-2 py-2">
           <EditorContent editor={editor} />
         </div>
         {formik.touched.longDescription && formik.errors.longDescription && (
@@ -214,7 +252,7 @@ function AddPetForm({ initialValues, onSubmit }) {
         )}
       </div>
 
-      {/* Submit */}
+      {/* Submit Button */}
       {errorMsg && <div className="text-red-600 text-sm">{errorMsg}</div>}
       <div className="flex justify-center">
         <button

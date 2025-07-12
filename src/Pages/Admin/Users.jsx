@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import useAuth from '../../Hooks/useAuth';
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -16,6 +17,7 @@ const Users = () => {
       setLoading(false);
     }
   };
+  const { user } = useAuth();
 
   useEffect(() => {
     fetchUsers();

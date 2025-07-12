@@ -19,6 +19,7 @@ import AdminRoute from "../Routes/AdminRoute";
 import Users from "../Pages/Admin/Users";
 import AllPets from "../Pages/Admin/AllPets";
 import AllDonations from "../Pages/Admin/AllDonations";
+import AdoptionRequestsDashboard from "../Pages/Adoption Request/AdoptionRequestsDashboard";
 
 const router = createBrowserRouter([
   {
@@ -65,10 +66,11 @@ const router = createBrowserRouter([
             path: "update-pet/:id",
             element: <UpdatePet />,
           },
-          {
-            path: "adoption-request",
-            element: <div>Adoption Request Page</div>,
-          },
+          // {
+          //   path: "adoption-request",
+          //   element: <div>Adoption Request Page</div>,
+          // },
+          { path: "adoption-request", element: <AdoptionRequestsDashboard /> },
           {
             path: "create-donation-campaign",
             element: <CreateDonationCampaign />,
