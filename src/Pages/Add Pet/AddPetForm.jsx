@@ -4,6 +4,7 @@ import { useState } from "react";
 import Select from "react-select";
 import * as Yup from "yup";
 import useAuth from "../../Hooks/useAuth";
+import Swal from "sweetalert2"; // ✅ Import SweetAlert2
 
 // TipTap Editor
 import { EditorContent, useEditor } from "@tiptap/react";
@@ -65,9 +66,19 @@ function AddPetForm({ initialValues, onSubmit }) {
               petColor: values.petColor,
               petBreed: values.petBreed,
               userId: user.uid,
+              adopted: false,
+              createdAt: new Date(),
             });
 
-            alert("Pet added successfully!");
+            // ✅ SweetAlert on success
+            Swal.fire({
+              icon: "success",
+              title: "Pet Added!",
+              text: "Your pet has been listed for adoption.",
+              confirmButtonColor: "#3085d6",
+              confirmButtonText: "OK",
+            });
+
             formik.resetForm();
             editor.commands.clearContent();
           } catch (err) {

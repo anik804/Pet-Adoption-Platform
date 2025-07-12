@@ -2,14 +2,15 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import axios from "axios";
-import useAuth from "../../Hooks/useAuth"; // ✅ Add this
+import useAuth from "../../Hooks/useAuth";
+import Swal from "sweetalert2";
 
 const DonateModal = ({ isOpen, onClose, campaignId }) => {
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
   const stripe = useStripe();
   const elements = useElements();
-  const { user } = useAuth(); // ✅ Get logged-in user
+  const { user } = useAuth();
 
   const handleDonate = async (e) => {
     e.preventDefault();
@@ -31,22 +32,38 @@ const DonateModal = ({ isOpen, onClose, campaignId }) => {
       });
 
       if (result.error) {
-        alert(result.error.message);
+        Swal.fire({
+          icon: "error",
+          title: "Payment failed",
+          text: result.error.message,
+        });
       } else {
         // 3. Record donation with userId
         await axios.post("http://localhost:3000/donations", {
           campaignId,
           amount,
-          donorName: user?.displayName || "Anonymous", // ✅ Optional fallback
-          userId: user?.uid, // ✅ Send user ID
+          donorName: user?.displayName || "Anonymous",
+          userId: user?.uid,
         });
 
-        alert("Donation successful!");
+        // SweetAlert success popup
+        await Swal.fire({
+          icon: "success",
+          title: "Thank you!",
+          text: "Your donation was successful.",
+          confirmButtonColor: "#16a34a",
+        });
+
         onClose();
+        setAmount(""); // Reset amount input
       }
     } catch (err) {
       console.error(err);
-      alert("Payment failed.");
+      Swal.fire({
+        icon: "error",
+        title: "Payment failed",
+        text: "Something went wrong. Please try again.",
+      });
     } finally {
       setLoading(false);
     }

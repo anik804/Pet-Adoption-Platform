@@ -21,6 +21,7 @@ import AllPets from "../Pages/Admin/AllPets";
 import AllDonations from "../Pages/Admin/AllDonations";
 import AdoptionRequestsDashboard from "../Pages/Adoption Request/AdoptionRequestsDashboard";
 import MyDonations from "../Pages/Donation Campigns/MyDonations";
+import Error from "../Pages/Error Page/Error";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,11 @@ const router = createBrowserRouter([
         index: true,
         Component: Home,
       },
+      {
+  path: "*",
+  Component: Error,
+},
+
       {
         path: "pets",
         Component: Pets,

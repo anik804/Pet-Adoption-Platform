@@ -1,22 +1,24 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import useAuth from '../../Hooks/useAuth';
+import React, { useState } from "react";
+import axios from "axios";
+import useAuth from "../../Hooks/useAuth";
+import Swal from 'sweetalert2';
+
 
 const CreateDonationCampaign = () => {
   const { user } = useAuth();
 
-  const [petName, setPetName] = useState(''); // ✅ New state
+  const [petName, setPetName] = useState(""); // ✅ New state
   const [petImage, setPetImage] = useState(null);
-  const [maxDonation, setMaxDonation] = useState('');
-  const [lastDate, setLastDate] = useState('');
-  const [shortDescription, setShortDescription] = useState('');
-  const [longDescription, setLongDescription] = useState('');
+  const [maxDonation, setMaxDonation] = useState("");
+  const [lastDate, setLastDate] = useState("");
+  const [shortDescription, setShortDescription] = useState("");
+  const [longDescription, setLongDescription] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
-  const CLOUDINARY_UPLOAD_PRESET = 'Pet-Adoption-User';
-  const CLOUDINARY_CLOUD_NAME = 'dyyikpmpo';
+  const CLOUDINARY_UPLOAD_PRESET = "Pet-Adoption-User";
+  const CLOUDINARY_CLOUD_NAME = "dyyikpmpo";
   const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
 
   const handleImageChange = (e) => {
@@ -25,26 +27,26 @@ const CreateDonationCampaign = () => {
 
   const uploadImage = async () => {
     if (!petImage) {
-      setError('Please select an image to upload.');
+      setError("Please select an image to upload.");
       return null;
     }
     const formData = new FormData();
-    formData.append('file', petImage);
-    formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+    formData.append("file", petImage);
+    formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
 
     try {
       const response = await axios.post(CLOUDINARY_UPLOAD_URL, formData);
       return response.data.secure_url;
     } catch {
-      setError('Image upload failed. Please try again.');
+      setError("Image upload failed. Please try again.");
       return null;
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-    setSuccess('');
+    setError("");
+    setSuccess("");
     setLoading(true);
 
     const uploadedImageUrl = await uploadImage();
@@ -65,21 +67,28 @@ const CreateDonationCampaign = () => {
     };
 
     try {
-      const response = await axios.post('http://localhost:3000/donation-campaigns', campaignData);
+      const response = await axios.post(
+        "http://localhost:3000/donation-campaigns",
+        campaignData
+      );
       if (response.status === 201) {
-        setSuccess('Donation campaign created successfully!');
+        Swal.fire({
+          icon: "success",
+          title: "Success!",
+          text: "Donation campaign created successfully!",
+          confirmButtonColor: "#2563eb", // blue-600
+        });
+
         // Reset form
-        setPetName(''); // ✅ Reset petName
+        setPetName("");
         setPetImage(null);
-        setMaxDonation('');
-        setLastDate('');
-        setShortDescription('');
-        setLongDescription('');
-      } else {
-        setError('Failed to create donation campaign.');
+        setMaxDonation("");
+        setLastDate("");
+        setShortDescription("");
+        setLongDescription("");
       }
     } catch {
-      setError('Failed to create donation campaign.');
+      setError("Failed to create donation campaign.");
     } finally {
       setLoading(false);
     }
@@ -107,10 +116,17 @@ const CreateDonationCampaign = () => {
 
         <div>
           <label className="block mb-1 font-medium">Pet Picture</label>
-          <input type="file" accept="image/*" onChange={handleImageChange} required />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            required
+          />
         </div>
         <div>
-          <label className="block mb-1 font-medium">Maximum Donation Amount</label>
+          <label className="block mb-1 font-medium">
+            Maximum Donation Amount
+          </label>
           <input
             type="number"
             min="1"
@@ -121,7 +137,9 @@ const CreateDonationCampaign = () => {
           />
         </div>
         <div>
-          <label className="block mb-1 font-medium">Last Date of Donation</label>
+          <label className="block mb-1 font-medium">
+            Last Date of Donation
+          </label>
           <input
             type="date"
             value={lastDate}
@@ -156,7 +174,7 @@ const CreateDonationCampaign = () => {
           disabled={loading}
           className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
         >
-          {loading ? 'Submitting...' : 'Submit'}
+          {loading ? "Submitting..." : "Submit"}
         </button>
       </form>
     </div>
