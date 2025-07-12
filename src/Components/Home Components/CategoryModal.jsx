@@ -19,7 +19,7 @@ const CategoryModal = ({ isOpen, onClose, category, pets }) => {
             ) : (
               pets.map((pet) => (
                 <div key={pet._id} className="border p-3 rounded shadow">
-                  <img src={pet.image} alt={pet.name} className="w-full h-40 object-cover rounded" />
+                  <img src={pet.image || pet.petImage} alt={pet.name} className="w-full h-40 object-cover rounded" />
                   <h3 className="text-lg font-semibold mt-2">{pet.name}</h3>
                   <p className="text-sm text-gray-600">Age: {pet.age}</p>
                   <p className="text-sm text-gray-600">Location: {pet.location}</p>

@@ -17,17 +17,16 @@ const AdoptionRequestsDashboard = () => {
     enabled: !!user?.uid,
   });
 
-  // ✅ Mutation to update adoption request status and pet adoption state
+  // ✅ Mutation to update request status and pet adoption state
   const updateRequestMutation = useMutation({
     mutationFn: async ({ requestId, petId, action }) => {
-      await axios.patch(`http://localhost:3000/adoptions/${requestId}`, {
-        status: action,
-      });
-
       if (action === "accepted") {
-        await axios.patch(`http://localhost:3000/pets/${petId}`, {
-          adopted: true,
-        });
+        // Accept request and mark pet as adopted
+        await axios.patch(`http://localhost:3000/adoptions/${requestId}/accept`);
+        await axios.patch(`http://localhost:3000/pets/${petId}`, { adopted: true });
+      } else if (action === "rejected") {
+        // Reject request only
+        await axios.patch(`http://localhost:3000/adoptions/${requestId}/reject`);
       }
     },
     onSuccess: () => {
@@ -49,18 +48,14 @@ const AdoptionRequestsDashboard = () => {
       ) : (
         <div className="space-y-4">
           {requests.map((req) => {
-            const status = req.status || "pending"; // fallback in case it's missing
+            const status = req.status || "pending";
 
             return (
-              <div
-                key={req._id}
-                className="border rounded-lg p-4 shadow-sm bg-white"
-              >
+              <div key={req._id} className="border rounded-lg p-4 shadow-sm bg-white">
                 <p><strong>Pet:</strong> {req.pet?.name || "Unknown Pet"}</p>
                 <p><strong>Requested By:</strong> {req.userEmail}</p>
                 <p><strong>Status:</strong> {status}</p>
 
-                {/* ✅ Conditionally show buttons based on status */}
                 {status === "pending" && (
                   <div className="mt-2 space-x-3">
                     <button

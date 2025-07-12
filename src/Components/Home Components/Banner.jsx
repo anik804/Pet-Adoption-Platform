@@ -2,6 +2,7 @@ import React from "react";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router"; // ✅ Import
 
 import pic1 from "../../assets/b1.jpg";
 import pic2 from "../../assets/b2.jpg";
@@ -16,6 +17,11 @@ const bannerTextVariant = {
 
 const Banner = () => {
   const images = [pic1, pic2, pic3, pic4, pic5];
+  const navigate = useNavigate(); // ✅ Initialize navigation
+
+  const handleExploreClick = () => {
+    navigate("/pets"); // ✅ Navigate to /pets
+  };
 
   return (
     <div className="relative">
@@ -78,7 +84,10 @@ const Banner = () => {
                   animate="visible"
                   transition={{ delay: 1, duration: 1 }}
                 >
-                  <button className="px-6 py-3 bg-white text-gray-900 font-semibold rounded-full shadow-md hover:bg-gray-100 transition duration-300">
+                  <button
+                    onClick={handleExploreClick} // ✅ Add onClick
+                    className="px-6 py-3 bg-white text-gray-900 font-semibold rounded-full shadow-md hover:bg-gray-100 transition duration-300"
+                  >
                     Explore Now
                   </button>
                 </motion.div>

@@ -30,7 +30,7 @@ const Login = () => {
           email: user.email,
           displayName: user.displayName || '',
           photoURL: user.photoURL || '',
-          role: 'user', // default role
+          role: 'user',
         }),
       });
       if (!response.ok) {
@@ -59,63 +59,88 @@ const Login = () => {
 
   return (
     <div
-      className="flex items-center justify-start min-h-screen bg-cover bg-center px-6 md:px-20"
+      className="min-h-screen flex items-center justify-center px-4 md:px-12 bg-cover bg-center py-5"
       style={{ backgroundImage: `url(${bg})` }}
     >
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="card bg-base-100 w-[300px] md:w-[350px] shadow-2xl">
-          <div className="card-body">
-            <h2 className="card-title text-center">Login to your account</h2>
-            <fieldset className="fieldset">
-              <label className="label">Email</label>
-              <input
-                type="email"
-                {...register("email", {
-                  required: "Email is required",
-                  pattern: {
-                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                    message: "Invalid email format",
-                  },
-                })}
-                className="input"
-                placeholder="Email"
-              />
-              {errors.email && (
-                <span className="text-red-500 text-sm">
-                  {errors.email.message}
-                </span>
-              )}
-              <label className="label">Password</label>
-              <input
-                type="password"
-                {...register("password", {
-                  required: "Password is required",
-                  pattern: {
-                    value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,}$/,
-                    message:
-                      "Password must contain at least one uppercase, one lowercase, one number and be at least 6 characters long",
-                  },
-                })}
-                className="input"
-                placeholder="Password"
-              />
-              {errors.password && (
-                <span className="text-red-500 text-sm">
-                  {errors.password.message}
-                </span>
-              )}
-            </fieldset>
-            <p>
-              Don't have an account ?{" "}
-              <Link to="/register" className="font-bold text-amber-600">
-                Register
-              </Link>
-            </p>
-            <button className="btn btn-neutral mt-4">Login</button>
+      <div className="bg-white bg-opacity-90 shadow-lg rounded-lg max-w-md w-full p-8 md:p-12">
+        <LogoSection />
+        <h2 className="text-2xl md:text-3xl font-semibold text-center mb-8">
+          Login to Your Account
+        </h2>
+        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+          {/* Email */}
+          <div className="mb-6">
+            <label htmlFor="email" className="block text-gray-700 font-medium mb-2">
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              placeholder="Enter your email"
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: "Invalid email format",
+                },
+              })}
+              className={`w-full border rounded px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-400 transition ${
+                errors.email ? "border-red-500" : "border-gray-300"
+              }`}
+            />
+            {errors.email && (
+              <p className="text-red-600 mt-1 text-sm">{errors.email.message}</p>
+            )}
           </div>
+
+          {/* Password */}
+          <div className="mb-6">
+            <label htmlFor="password" className="block text-gray-700 font-medium mb-2">
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              placeholder="Enter your password"
+              {...register("password", {
+                required: "Password is required",
+                pattern: {
+                  value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,}$/,
+                  message:
+                    "Password must contain at least one uppercase, one lowercase, one number, and be at least 6 characters long",
+                },
+              })}
+              className={`w-full border rounded px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-400 transition ${
+                errors.password ? "border-red-500" : "border-gray-300"
+              }`}
+            />
+            {errors.password && (
+              <p className="text-red-600 mt-1 text-sm">{errors.password.message}</p>
+            )}
+          </div>
+
+          {/* Register Link */}
+          <p className="text-center text-gray-600 mb-6">
+            Don't have an account?{" "}
+            <Link to="/register" className="text-amber-600 font-semibold hover:underline">
+              Register
+            </Link>
+          </p>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full bg-amber-500 hover:bg-amber-600 text-white font-semibold py-3 rounded transition"
+          >
+            Login
+          </button>
+        </form>
+
+        {/* Social Login */}
+        <div className="mt-8">
+          <SocialLogin />
         </div>
-      </form>
-      <SocialLogin />
+      </div>
     </div>
   );
 };
