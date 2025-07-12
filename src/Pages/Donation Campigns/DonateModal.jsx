@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import axios from "axios";
+import useAuth from "../../Hooks/useAuth"; // ✅ Add this
 
 const DonateModal = ({ isOpen, onClose, campaignId }) => {
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
   const stripe = useStripe();
   const elements = useElements();
+  const { user } = useAuth(); // ✅ Get logged-in user
 
   const handleDonate = async (e) => {
     e.preventDefault();
@@ -31,12 +33,14 @@ const DonateModal = ({ isOpen, onClose, campaignId }) => {
       if (result.error) {
         alert(result.error.message);
       } else {
-        // 3. Update campaign with donation
+        // 3. Record donation with userId
         await axios.post("http://localhost:3000/donations", {
           campaignId,
           amount,
-          donorName: "Anonymous", // or get from auth/user context
+          donorName: user?.displayName || "Anonymous", // ✅ Optional fallback
+          userId: user?.uid, // ✅ Send user ID
         });
+
         alert("Donation successful!");
         onClose();
       }
