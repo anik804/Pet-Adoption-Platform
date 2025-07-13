@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useMemo } from "react";
 import axios from "axios";
-import { useTable, useSortBy, usePagination } from "react-table";
+import { useEffect, useMemo, useState } from "react";
 import Modal from "react-modal";
 import { useNavigate } from "react-router";
+import { usePagination, useSortBy, useTable } from "react-table";
 
 Modal.setAppElement("#root");
 
@@ -17,7 +17,7 @@ function AllDonations() {
   useEffect(() => {
     const fetchCampaigns = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/donation-campaigns`);
+        const res = await axios.get(`https://pet-adoption-platform-server-side.vercel.app/donation-campaigns`);
         setCampaigns(res.data.campaigns || res.data || []);
       } catch {
         setErrorMsg("Failed to fetch donation campaigns");
@@ -31,7 +31,7 @@ function AllDonations() {
   const handleDelete = async () => {
     if (!campaignToDelete) return;
     try {
-      await axios.delete(`http://localhost:3000/donation-campaigns/${campaignToDelete._id}`);
+      await axios.delete(`https://pet-adoption-platform-server-side.vercel.app/donation-campaigns/${campaignToDelete._id}`);
       setCampaigns((prev) => prev.filter((c) => c._id !== campaignToDelete._id));
       setModalIsOpen(false);
       setCampaignToDelete(null);
@@ -42,7 +42,7 @@ function AllDonations() {
 
   const handlePauseToggle = async (id, pause) => {
     try {
-      await axios.patch(`http://localhost:3000/donation-campaigns/${id}`, { paused: pause });
+      await axios.patch(`https://pet-adoption-platform-server-side.vercel.app/donation-campaigns/${id}`, { paused: pause });
       setCampaigns((prev) =>
         prev.map((c) => (c._id === id ? { ...c, paused: pause } : c))
       );

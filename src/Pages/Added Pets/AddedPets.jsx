@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useMemo } from "react";
-import { useNavigate } from "react-router";
-import useAuth from "../../Hooks/useAuth";
 import axios from "axios";
-import { useTable, useSortBy, usePagination } from "react-table";
+import { useEffect, useMemo, useState } from "react";
 import Modal from "react-modal";
+import { useNavigate } from "react-router";
+import { usePagination, useSortBy, useTable } from "react-table";
+import useAuth from "../../Hooks/useAuth";
 
 Modal.setAppElement("#root");
 
@@ -20,7 +20,7 @@ function AddedPets() {
     if (!user) return;
     const fetchPets = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/pets?userId=${user.uid}`);
+        const res = await axios.get(`https://pet-adoption-platform-server-side.vercel.app/pets?userId=${user.uid}`);
         setPets(res.data.pets || []);
       } catch {
         setErrorMsg("Failed to fetch pets");
@@ -118,7 +118,7 @@ function AddedPets() {
   const handleDelete = async () => {
     if (!petToDelete) return;
     try {
-      await axios.delete(`http://localhost:3000/pets/${petToDelete._id}`);
+      await axios.delete(`https://pet-adoption-platform-server-side.vercel.app/pets/${petToDelete._id}`);
       setPets((prev) => prev.filter((pet) => pet._id !== petToDelete._id));
       setModalIsOpen(false);
       setPetToDelete(null);
@@ -129,7 +129,7 @@ function AddedPets() {
 
   const handleAdopt = async (id) => {
     try {
-      await axios.patch(`http://localhost:3000/pets/${id}`, { adopted: true });
+      await axios.patch(`https://pet-adoption-platform-server-side.vercel.app/pets/${id}`, { adopted: true });
       setPets((prev) =>
         prev.map((pet) => (pet._id === id ? { ...pet, adopted: true } : pet))
       );

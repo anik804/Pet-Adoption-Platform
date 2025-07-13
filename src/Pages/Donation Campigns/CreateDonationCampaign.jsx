@@ -1,7 +1,7 @@
-import React, { useState } from "react";
 import axios from "axios";
-import useAuth from "../../Hooks/useAuth";
+import { useState } from "react";
 import Swal from 'sweetalert2';
+import useAuth from "../../Hooks/useAuth";
 
 
 const CreateDonationCampaign = () => {
@@ -68,7 +68,7 @@ const CreateDonationCampaign = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/donation-campaigns",
+        "https://pet-adoption-platform-server-side.vercel.app/donation-campaigns",
         campaignData
       );
       if (response.status === 201) {

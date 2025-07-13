@@ -1,10 +1,9 @@
-import React from "react";
-import LogoSection from "../../Shared/Logo Section/LogoSection";
-import bg from "../../../assets/login_bg.jpg";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate, useLocation } from "react-router";
-import SocialLogin from "../Social Login/SocialLogin";
+import { Link, useLocation, useNavigate } from "react-router";
+import bg from "../../../assets/login_bg.jpg";
 import useAuth from "../../../Hooks/useAuth";
+import LogoSection from "../../Shared/Logo Section/LogoSection";
+import SocialLogin from "../Social Login/SocialLogin";
 
 const Login = () => {
   const {
@@ -21,7 +20,7 @@ const Login = () => {
   const saveUserToBackend = async (user) => {
     try {
       console.log('Saving user to backend:', user.email);
-      const response = await fetch(`http://localhost:3000/users/${user.email}`, {
+      const response = await fetch(`https://pet-adoption-platform-server-side.vercel.app/users/${user.email}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

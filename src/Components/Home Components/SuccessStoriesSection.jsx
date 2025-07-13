@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
 import { motion } from "framer-motion";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../Context/Auth Context/AuthContext";
 
 const SuccessStories = () => {
@@ -16,7 +16,7 @@ const SuccessStories = () => {
 
   // Fetch stories from backend
   useEffect(() => {
-    fetch("http://localhost:3000/success-stories")
+    fetch("https://pet-adoption-platform-server-side.vercel.app/success-stories")
       .then((res) => res.json())
       .then((data) => setStories(data))
       .catch(() => setStories([]));
@@ -39,7 +39,7 @@ const SuccessStories = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch("http://localhost:3000/success-stories", {
+      const response = await fetch("https://pet-adoption-platform-server-side.vercel.app/success-stories", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

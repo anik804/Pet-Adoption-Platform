@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import LogoSection from "../../Shared/Logo Section/LogoSection";
-import bg from "../../../assets/register_bg.jpg";
-import useAuth from "../../../Hooks/useAuth";
-import { Link, useNavigate, useLocation } from "react-router";
-import SocialLogin from "../Social Login/SocialLogin";
 import { updateProfile } from "firebase/auth";
-import { auth } from "../../../Firebase/firebase.init";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Link, useLocation, useNavigate } from "react-router";
 import Swal from "sweetalert2";
+import bg from "../../../assets/register_bg.jpg";
+import { auth } from "../../../Firebase/firebase.init";
+import useAuth from "../../../Hooks/useAuth";
+import LogoSection from "../../Shared/Logo Section/LogoSection";
+import SocialLogin from "../Social Login/SocialLogin";
 
 const Register = () => {
   const {
@@ -62,7 +62,7 @@ const Register = () => {
         });
 
         // ✅ Save to DB
-        await fetch(`http://localhost:3000/users/${result.user.email}`, {
+        await fetch(`https://pet-adoption-platform-server-side.vercel.app/users/${result.user.email}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",

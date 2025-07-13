@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { useParams, useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import PetAdoptionModal from "./Pet Adoption Modal/PetAdoptionModal";
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router";
 import useAuth from "../../Hooks/useAuth";
+import PetAdoptionModal from "./Pet Adoption Modal/PetAdoptionModal";
 
 const PetDetails = () => {
   const { id } = useParams();
@@ -14,7 +14,7 @@ const PetDetails = () => {
   const { data: pet, isLoading } = useQuery({
     queryKey: ["pet", id],
     queryFn: async () => {
-      const res = await axios.get(`http://localhost:3000/Pets/${id}`);
+      const res = await axios.get(`https://pet-adoption-platform-server-side.vercel.app/Pets/${id}`);
       return res.data;
     },
   });

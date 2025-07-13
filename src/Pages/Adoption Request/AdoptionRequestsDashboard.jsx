@@ -1,5 +1,4 @@
-import React from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import useAuth from "../../Hooks/useAuth";
 
@@ -11,7 +10,7 @@ const AdoptionRequestsDashboard = () => {
   const { data: requests = [], isLoading } = useQuery({
     queryKey: ["adoption-requests", user?.uid],
     queryFn: async () => {
-      const res = await axios.get(`http://localhost:3000/adoptions/owner/${user?.uid}`);
+      const res = await axios.get(`https://pet-adoption-platform-server-side.vercel.app/adoptions/owner/${user?.uid}`);
       return res.data;
     },
     enabled: !!user?.uid,
@@ -22,11 +21,11 @@ const AdoptionRequestsDashboard = () => {
     mutationFn: async ({ requestId, petId, action }) => {
       if (action === "accepted") {
         // Accept request and mark pet as adopted
-        await axios.patch(`http://localhost:3000/adoptions/${requestId}/accept`);
-        await axios.patch(`http://localhost:3000/pets/${petId}`, { adopted: true });
+        await axios.patch(`https://pet-adoption-platform-server-side.vercel.app/adoptions/${requestId}/accept`);
+        await axios.patch(`https://pet-adoption-platform-server-side.vercel.app/pets/${petId}`, { adopted: true });
       } else if (action === "rejected") {
         // Reject request only
-        await axios.patch(`http://localhost:3000/adoptions/${requestId}/reject`);
+        await axios.patch(`https://pet-adoption-platform-server-side.vercel.app/adoptions/${requestId}/reject`);
       }
     },
     onSuccess: () => {

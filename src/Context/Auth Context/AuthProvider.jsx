@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { AuthContext } from './AuthContext';
 import { createUserWithEmailAndPassword, GithubAuthProvider, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from 'firebase/auth';
+import { useEffect, useState } from 'react';
 import { auth } from '../../Firebase/firebase.init';
+import { AuthContext } from './AuthContext';
 
 const googleProvider = new GoogleAuthProvider();
 const githubProvider = new GithubAuthProvider();
@@ -40,7 +40,7 @@ const AuthProvider = ({children}) => {
       setUser(currentUser);
       if(currentUser && currentUser.email){
         // Fetch user role from backend
-        fetch(`http://localhost:3000/users?email=${currentUser.email}`)
+        fetch(`https://pet-adoption-platform-server-side.vercel.app/users?email=${currentUser.email}`)
           .then(res => res.json())
           .then(data => {
             if(data && data.length > 0){

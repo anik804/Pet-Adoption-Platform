@@ -1,5 +1,5 @@
-import React, { useState } from "react";
 import axios from "axios";
+import { useState } from "react";
 
 const AdoptModal = ({ pet, user, onClose }) => {
   const [formData, setFormData] = useState({
@@ -22,7 +22,7 @@ const AdoptModal = ({ pet, user, onClose }) => {
     };
 
     try {
-      await axios.post("http://localhost:3000/adoptions", adoptionData);
+      await axios.post("https://pet-adoption-platform-server-side.vercel.app/adoptions", adoptionData);
       alert("Adoption request submitted successfully!");
       onClose();
     } catch (error) {

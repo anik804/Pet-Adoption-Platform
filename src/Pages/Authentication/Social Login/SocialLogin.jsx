@@ -1,5 +1,4 @@
-import React from "react";
-import { useNavigate, useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import useAuth from "../../../Hooks/useAuth";
 
 const SocialLogin = () => {
@@ -15,7 +14,7 @@ const SocialLogin = () => {
         // Save user to backend
         if (result.user) {
           try {
-            const response = await fetch(`http://localhost:3000/users/${result.user.email}`, {
+            const response = await fetch(`https://pet-adoption-platform-server-side.vercel.app/users/${result.user.email}`, {
               method: 'PUT',
               headers: {
                 'Content-Type': 'application/json',
@@ -52,7 +51,7 @@ const SocialLogin = () => {
         // Save user to backend
         if (result.user) {
           try {
-            const response = await fetch(`http://localhost:3000/users/${result.user.email}`, {
+            const response = await fetch(`https://pet-adoption-platform-server-side.vercel.app/users/${result.user.email}`, {
               method: 'PUT',
               headers: {
                 'Content-Type': 'application/json',

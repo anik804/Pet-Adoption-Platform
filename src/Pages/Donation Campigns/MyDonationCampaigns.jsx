@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 // import ViewDonatorsModal from "./ViewDonatorsModal";
 import useAuth from "../../Hooks/useAuth";
@@ -18,7 +18,7 @@ const MyDonationCampaigns = () => {
     const fetchCampaigns = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`http://localhost:3000/donation-campaigns/user/${user.uid}`);
+        const res = await axios.get(`https://pet-adoption-platform-server-side.vercel.app/donation-campaigns/user/${user.uid}`);
         setCampaigns(res.data);
     } catch {
       setError("Failed to load your donation campaigns.");
@@ -31,7 +31,7 @@ const MyDonationCampaigns = () => {
 
   const togglePause = async (campaign) => {
     try {
-      await axios.patch(`http://localhost:3000/donation-campaigns/${campaign._id}/pause`, {
+      await axios.patch(`https://pet-adoption-platform-server-side.vercel.app/donation-campaigns/${campaign._id}/pause`, {
         paused: !campaign.paused,
       });
       setCampaigns((prev) =>

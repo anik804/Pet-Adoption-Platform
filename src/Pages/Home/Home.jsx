@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import Banner from "../../Components/Home Components/Banner";
-import AboutUs from "../../Components/Home Components/AboutUs";
-import CallToAction from "../../Components/Home Components/CallToAction";
-import HowYouCanHelp from "../../Components/Home Components/HowYouCanHelp";
-import SuccessStories from "../../Components/Home Components/SuccessStoriesSection";
-import PetCategories from "../../Components/Home Components/PetCategories";
 import axios from "axios";
+import { useState } from "react";
+import AboutUs from "../../Components/Home Components/AboutUs";
+import Banner from "../../Components/Home Components/Banner";
+import CallToAction from "../../Components/Home Components/CallToAction";
 import CategoryModal from "../../Components/Home Components/CategoryModal";
+import HowYouCanHelp from "../../Components/Home Components/HowYouCanHelp";
+import PetCategories from "../../Components/Home Components/PetCategories";
+import SuccessStories from "../../Components/Home Components/SuccessStoriesSection";
 
 const Home = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -19,7 +19,7 @@ const Home = () => {
 
     try {
       const res = await axios.get(
-        `http://localhost:3000/pets?category=${category}`
+        `https://pet-adoption-platform-server-side.vercel.app/pets?category=${category}`
       );
       setCategoryPets(res.data.pets);
     } catch (err) {

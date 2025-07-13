@@ -1,11 +1,10 @@
-import React from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useInView } from "react-intersection-observer";
 import axios from "axios";
+import { useInView } from "react-intersection-observer";
 import { Link } from "react-router";
 
 const fetchCampaigns = async ({ pageParam = 1 }) => {
-  const res = await axios.get(`http://localhost:3000/donation-campaigns?page=${pageParam}&limit=6`);
+  const res = await axios.get(`https://pet-adoption-platform-server-side.vercel.app/donation-campaigns?page=${pageParam}&limit=6`);
   return res.data;
 };
 

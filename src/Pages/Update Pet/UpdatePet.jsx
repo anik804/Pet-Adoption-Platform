@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router";
 import AddPetForm from "../Add Pet/AddPetForm";
 
 function UpdatePet() {
@@ -13,7 +13,7 @@ function UpdatePet() {
   useEffect(() => {
     const fetchPet = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/pets/${id}`);
+        const res = await axios.get(`https://pet-adoption-platform-server-side.vercel.app/pets/${id}`);
         const pet = res.data;
         setInitialValues({
           petImage: pet.petImage || pet.petImage || "",
@@ -35,7 +35,7 @@ function UpdatePet() {
 
   const handleUpdate = async (values) => {
     try {
-      await axios.patch(`http://localhost:3000/pets/${id}`, {
+      await axios.patch(`https://pet-adoption-platform-server-side.vercel.app/pets/${id}`, {
         petImage: values.petImage,
         petName: values.petName,
         petAge: Number(values.petAge),

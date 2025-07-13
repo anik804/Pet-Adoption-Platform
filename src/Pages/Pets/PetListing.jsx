@@ -1,13 +1,13 @@
-import React, { useState } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useInView } from "react-intersection-observer";
 import axios from "axios";
+import { useState } from "react";
+import { useInView } from "react-intersection-observer";
 import { useNavigate } from "react-router";
 
 const fetchPets = async ({ pageParam = 1, queryKey }) => {
   const [_key, { search, category }] = queryKey;
   const res = await axios.get(
-    `http://localhost:3000/pets?page=${pageParam}&limit=9&search=${search}&category=${category}`
+    `https://pet-adoption-platform-server-side.vercel.app/pets?page=${pageParam}&limit=9&search=${search}&category=${category}`
   );
   return res.data;
 };

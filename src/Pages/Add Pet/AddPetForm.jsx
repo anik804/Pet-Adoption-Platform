@@ -2,9 +2,9 @@ import axios from "axios";
 import { useFormik } from "formik";
 import { useState } from "react";
 import Select from "react-select";
+import Swal from "sweetalert2"; // ✅ Import SweetAlert2
 import * as Yup from "yup";
 import useAuth from "../../Hooks/useAuth";
-import Swal from "sweetalert2"; // ✅ Import SweetAlert2
 
 // TipTap Editor
 import { EditorContent, useEditor } from "@tiptap/react";
@@ -55,7 +55,7 @@ function AddPetForm({ initialValues, onSubmit }) {
           }
 
           try {
-            await axios.post("http://localhost:3000/pets", {
+            await axios.post("https://pet-adoption-platform-server-side.vercel.app/pets", {
               petImage: values.petImage,
               petName: values.petName,
               petAge: Number(values.petAge),

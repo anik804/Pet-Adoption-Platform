@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import Modal from "react-modal";
-import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import axios from "axios";
-import useAuth from "../../Hooks/useAuth";
+import { useState } from "react";
+import Modal from "react-modal";
 import Swal from "sweetalert2";
+import useAuth from "../../Hooks/useAuth";
 
 const DonateModal = ({ isOpen, onClose, campaignId }) => {
   const [amount, setAmount] = useState("");
@@ -20,7 +20,7 @@ const DonateModal = ({ isOpen, onClose, campaignId }) => {
 
     try {
       // 1. Create payment intent
-      const { data: clientSecret } = await axios.post("http://localhost:3000/create-payment-intent", {
+      const { data: clientSecret } = await axios.post("https://pet-adoption-platform-server-side.vercel.app/create-payment-intent", {
         amount,
       });
 
@@ -39,7 +39,7 @@ const DonateModal = ({ isOpen, onClose, campaignId }) => {
         });
       } else {
         // 3. Record donation with userId
-        await axios.post("http://localhost:3000/donations", {
+        await axios.post("https://pet-adoption-platform-server-side.vercel.app/donations", {
           campaignId,
           amount,
           donorName: user?.displayName || "Anonymous",

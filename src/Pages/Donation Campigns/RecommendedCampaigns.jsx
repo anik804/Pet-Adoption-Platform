@@ -1,4 +1,3 @@
-import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -6,7 +5,7 @@ const RecommendedCampaigns = ({ currentId }) => {
   const { data, isLoading } = useQuery({
     queryKey: ["recommendedCampaigns"],
     queryFn: async () => {
-      const res = await axios.get("http://localhost:3000/donation-campaigns?limit=10");
+      const res = await axios.get("https://pet-adoption-platform-server-side.vercel.app/donation-campaigns?limit=10");
       return res.data.campaigns.filter((c) => c._id !== currentId).slice(0, 3);
     },
   });

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
 import useAuth from "../../Hooks/useAuth";
 
 const MyDonations = () => {
@@ -12,7 +12,7 @@ const MyDonations = () => {
       if (!user?.uid) return;
 
       try {
-        const res = await axios.get(`http://localhost:3000/donations/user/${user.uid}`);
+        const res = await axios.get(`https://pet-adoption-platform-server-side.vercel.app/donations/user/${user.uid}`);
         setDonations(res.data);
       } catch (error) {
         console.error("Failed to fetch donations:", error);

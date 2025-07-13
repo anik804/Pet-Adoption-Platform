@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { useParams } from "react-router";
-import { useQuery } from "@tanstack/react-query";
-import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { useState } from "react";
+import { useParams } from "react-router";
+import useAuth from "../../Hooks/useAuth"; // Import your auth hook
 import DonateModal from "./DonateModal";
 import RecommendedCampaigns from "./RecommendedCampaigns";
-import useAuth from "../../Hooks/useAuth"; // Import your auth hook
 
 const stripePromise = loadStripe("pk_test_51RjPBvDBdSNx5Xmurq2HL8ywDEtcrKxHFSmozfi0ZHE6zoJEDVuCZrC2M2fsHNu4mVb8CMNwGcU3eu8KBCS3UkPX00XCIdl9h4");
 
@@ -18,7 +18,7 @@ const DonationDetailsPage = () => {
   const { data: campaign, isLoading, error } = useQuery({
     queryKey: ["donationDetails", id],
     queryFn: async () => {
-      const res = await axios.get(`http://localhost:3000/donation-campaigns/${id}`);
+      const res = await axios.get(`https://pet-adoption-platform-server-side.vercel.app/donation-campaigns/${id}`);
       return res.data;
     },
   });

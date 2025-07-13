@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import useAuth from '../../Hooks/useAuth';
 
 const Users = () => {
@@ -8,7 +8,7 @@ const Users = () => {
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:3000/users');
+      const response = await fetch('https://pet-adoption-platform-server-side.vercel.app/users');
       const data = await response.json();
       setUsers(data);
     } catch (error) {
@@ -25,7 +25,7 @@ const Users = () => {
 
   const handleMakeAdmin = async (userId) => {
     try {
-      const response = await fetch(`http://localhost:3000/users/${userId}/admin`, {
+      const response = await fetch(`https://pet-adoption-platform-server-side.vercel.app/users/${userId}/admin`, {
         method: 'PATCH',
       });
       if (response.ok) {
