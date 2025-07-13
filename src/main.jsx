@@ -5,13 +5,12 @@ import { RouterProvider } from "react-router";
 import router from "./Router/Router.jsx";
 import AuthProvider from "./Context/Auth Context/AuthProvider.jsx";
 
-// 🔥 Import TanStack Query
+
 import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
 
-// ✅ Create QueryClient instance
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")).render(

@@ -3,9 +3,6 @@ import { NavLink, Outlet } from 'react-router';
 import useAuth from '../../Hooks/useAuth';
 import AddPetForm from '../Add Pet/AddPetForm';
 
-
-// const { user } = useAuth();
-
 export const AddPet = () => {
   return (
     <div className="p-4">
