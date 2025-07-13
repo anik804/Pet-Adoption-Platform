@@ -1,12 +1,59 @@
-# React + Vite
+# Pet Adoption Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Purpose
+The Pet Adoption Platform is a web application designed to facilitate pet adoption, manage donation campaigns, and provide a comprehensive dashboard for users and administrators. It aims to connect potential pet adopters with available pets, streamline adoption requests, and support donation efforts for animal welfare.
 
-Currently, two official plugins are available:
+## Live URL
+https://pet-adoption-e1af6.web.app/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Key Features
+- Browse and search pet listings
+- Submit and manage adoption requests
+- Create and participate in donation campaigns
+- User authentication and registration
+- User dashboard for managing adoptions and donations
+- Admin panel for managing pets, users, and donations
+- Responsive and user-friendly interface
 
-## Expanding the ESLint configuration
+## NPM Packages Used
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Main Dependencies
+- React
+- React DOM
+- React Router
+- Firebase
+- Axios
+- Formik
+- Yup
+- TailwindCSS
+- DaisyUI
+- Framer Motion
+- React Query
+- Stripe React SDK
+- Material UI
+- Heroicons
+- React Icons
+- React Modal
+- React Select
+- React Table
+- SweetAlert2
+- Lottie React
+- Cloudinary React SDK
+- Emotion (styled and react)
+- Headless UI
+
+### Dev Dependencies
+- Vite
+- ESLint and related plugins
+- TailwindCSS and PostCSS
+- Autoprefixer
+- DaisyUI
+- TypeScript types for React
+
+## Installation and Setup
+1. Clone the repository
+2. Run `npm install` to install dependencies
+3. Run `npm run dev` to start the development server
+
+## License
+[Specify your license here]
