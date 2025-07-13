@@ -73,10 +73,6 @@ const router = createBrowserRouter([
             path: "update-pet/:id",
             element: <UpdatePet />,
           },
-          // {
-          //   path: "adoption-request",
-          //   element: <div>Adoption Request Page</div>,
-          // },
           { path: "adoption-request", element: <AdoptionRequestsDashboard /> },
           {
             path: "create-donation-campaign",
