@@ -2,13 +2,13 @@ import React from "react";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router"; // ✅ Import
+import { useNavigate } from "react-router";
 
 import pic1 from "../../assets/b1.jpg";
 import pic2 from "../../assets/b2.jpg";
 import pic3 from "../../assets/b3.jpg";
 import pic4 from "../../assets/b4.jpg";
-import pic5 from "../../assets/b5.jpg";
+import pic5 from "../../assets/l1.jpg";
 
 const bannerTextVariant = {
   hidden: { opacity: 0, y: -50 },
@@ -17,10 +17,10 @@ const bannerTextVariant = {
 
 const Banner = () => {
   const images = [pic1, pic2, pic3, pic4, pic5];
-  const navigate = useNavigate(); // ✅ Initialize navigation
+  const navigate = useNavigate();
 
   const handleExploreClick = () => {
-    navigate("/pets"); // ✅ Navigate to /pets
+    navigate("/pets");
   };
 
   return (
@@ -34,12 +34,17 @@ const Banner = () => {
       >
         {images.map((img, idx) => (
           <div key={idx} className="relative">
-            <img src={img} className="h-[800px] w-full object-cover" />
+            {/* Responsive height */}
+            <img
+              src={img}
+              className="w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[800px] object-cover"
+            />
+
             {/* Overlay content */}
-            <div className="absolute inset-0 flex items-center justify-start px-6 md:px-16">
+            <div className="absolute inset-0 flex items-center justify-start px-4 sm:px-6 md:px-16">
               <div className="max-w-xl text-left">
                 <motion.h1
-                  className="text-3xl md:text-6xl font-bold text-white"
+                  className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-white"
                   variants={bannerTextVariant}
                   initial="hidden"
                   animate="visible"
@@ -66,7 +71,7 @@ const Banner = () => {
                 </motion.h1>
 
                 <motion.p
-                  className="mt-4 text-lg md:text-xl text-white"
+                  className="mt-4 text-sm sm:text-lg md:text-xl text-white"
                   variants={bannerTextVariant}
                   initial="hidden"
                   animate="visible"
@@ -85,8 +90,8 @@ const Banner = () => {
                   transition={{ delay: 1, duration: 1 }}
                 >
                   <button
-                    onClick={handleExploreClick} // ✅ Add onClick
-                    className="px-6 py-3 bg-white text-gray-900 font-semibold rounded-full shadow-md hover:bg-gray-100 transition duration-300"
+                    onClick={handleExploreClick}
+                    className="px-5 py-2 sm:px-6 sm:py-3 bg-white text-gray-900 font-semibold rounded-full shadow-md hover:bg-gray-100 transition duration-300 text-sm sm:text-base"
                   >
                     Explore Now
                   </button>
