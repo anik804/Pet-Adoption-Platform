@@ -22,6 +22,7 @@ import AllDonations from "../Pages/Admin/AllDonations";
 import AdoptionRequestsDashboard from "../Pages/Adoption Request/AdoptionRequestsDashboard";
 import MyDonations from "../Pages/Donation Campigns/MyDonations";
 import Error from "../Pages/Error Page/Error";
+import ContactUs from "../Pages/Contact Us/ContactUs";
 
 const router = createBrowserRouter([
   {
@@ -52,6 +53,11 @@ const router = createBrowserRouter([
       {
         path: "donation-campaigns/:id",
         Component: DonationDetailsPage,
+      },
+      {
+        path: "contact-us",
+        Component: ContactUs,
+
       },
       {
         path: "dashboard",

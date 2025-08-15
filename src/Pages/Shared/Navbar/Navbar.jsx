@@ -39,6 +39,9 @@ const Navbar = () => {
       <li className="text-xl">
         <MotionNavLink to="/donation-campaigns">Donation Campaigns</MotionNavLink>
       </li>
+      <li className="text-xl">
+        <MotionNavLink to="/contact-us">Contact Us</MotionNavLink>
+      </li>
     </>
   );
 
