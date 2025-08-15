@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../Context/Auth Context/AuthContext";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const SuccessStories = () => {
   const { user } = useContext(AuthContext);
@@ -13,13 +15,15 @@ const SuccessStories = () => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [fetchingStories, setFetchingStories] = useState(true);
 
   // Fetch stories from backend
   useEffect(() => {
     fetch("https://pet-adoption-platform-server-side.vercel.app/success-stories")
       .then((res) => res.json())
       .then((data) => setStories(data))
-      .catch(() => setStories([]));
+      .catch(() => setStories([]))
+      .finally(() => setFetchingStories(false));
   }, []);
 
   const handleInputChange = (e) => {
@@ -41,9 +45,7 @@ const SuccessStories = () => {
     try {
       const response = await fetch("https://pet-adoption-platform-server-side.vercel.app/success-stories", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           userId: user.uid,
           name: formData.name,
@@ -51,11 +53,8 @@ const SuccessStories = () => {
           image: formData.image || null
         })
       });
-      if (!response.ok) {
-        throw new Error("Failed to submit story");
-      }
+      if (!response.ok) throw new Error("Failed to submit story");
       const result = await response.json();
-      // Add new story to UI
       setStories((prev) => [
         {
           _id: result.storyId,
@@ -68,11 +67,7 @@ const SuccessStories = () => {
         ...prev
       ]);
       setShowForm(false);
-      setFormData({
-        name: user.displayName || "",
-        story: "",
-        image: ""
-      });
+      setFormData({ name: user.displayName || "", story: "", image: "" });
     } catch (err) {
       setError(err.message);
     } finally {
@@ -86,21 +81,11 @@ const SuccessStories = () => {
       initial={{ opacity: 1 }}
       animate={{
         backgroundColor: [
-          "#1f2937", // slate-800
-          "#4b5563", // gray-700
-          "#334155", // slate-700
-          "#1e3a8a", // blue-900
-          "#1f2937",
+          "#1f2937", "#4b5563", "#334155", "#1e3a8a", "#1f2937",
         ],
       }}
-      transition={{
-        duration: 18,
-        repeat: Infinity,
-        repeatType: "loop",
-        ease: "easeInOut",
-      }}
+      transition={{ duration: 18, repeat: Infinity, repeatType: "loop", ease: "easeInOut" }}
     >
-      {/* Heading */}
       <motion.h2
         className="text-4xl font-extrabold text-center mb-8 text-white"
         initial={{ opacity: 0, y: -20 }}
@@ -110,30 +95,45 @@ const SuccessStories = () => {
         🐾 Happy Tails: Lives You Changed
       </motion.h2>
 
-      {/* Stories Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-white">
-        {stories.map((story, i) => (
-          <motion.div
-            key={story._id || i}
-            className="bg-white/10 backdrop-blur-md rounded-lg shadow-md p-5 hover:shadow-xl transition-shadow duration-300"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.3 }}
-          >
-            {story.image && (
-              <img
-                src={story.image}
-                alt={story.name}
-                className="w-full h-48 object-cover rounded-lg mb-4"
-              />
-            )}
-            <h3 className="text-xl font-semibold text-pink-300 mb-2">{story.name}</h3>
-            <p className="text-gray-200">{story.story}</p>
-          </motion.div>
-        ))}
+        {fetchingStories
+          ? Array(6)
+              .fill()
+              .map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="bg-white/10 backdrop-blur-md rounded-lg shadow-md p-5"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                >
+                  <Skeleton height={180} className="mb-4" />
+                  <Skeleton height={20} width="60%" className="mb-2" />
+                  <Skeleton count={3} height={15} />
+                </motion.div>
+              ))
+          : stories.map((story, i) => (
+              <motion.div
+                key={story._id || i}
+                className="bg-white/10 backdrop-blur-md rounded-lg shadow-md p-5 hover:shadow-xl transition-shadow duration-300"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.3 }}
+              >
+                {story.image && (
+                  <img
+                    src={story.image}
+                    alt={story.name}
+                    className="w-full h-48 object-cover rounded-lg mb-4"
+                  />
+                )}
+                <h3 className="text-xl font-semibold text-pink-300 mb-2">{story.name}</h3>
+                <p className="text-gray-200">{story.story}</p>
+              </motion.div>
+            ))}
       </div>
 
-      {/* Button */}
+      {/* Share Story Button */}
       <motion.div
         className="mt-10 flex justify-center"
         initial={{ opacity: 0 }}

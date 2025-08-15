@@ -7,15 +7,19 @@ import CategoryModal from "../../Components/Home Components/CategoryModal";
 import HowYouCanHelp from "../../Components/Home Components/HowYouCanHelp";
 import PetCategories from "../../Components/Home Components/PetCategories";
 import SuccessStories from "../../Components/Home Components/SuccessStoriesSection";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const Home = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [categoryPets, setCategoryPets] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleCategoryClick = async (category) => {
     setSelectedCategory(category);
     setIsModalOpen(true);
+    setLoading(true);
 
     try {
       const res = await axios.get(
@@ -25,6 +29,8 @@ const Home = () => {
     } catch (err) {
       console.error("Failed to fetch pets by category", err);
       setCategoryPets([]);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -36,7 +42,17 @@ const Home = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         category={selectedCategory}
-        pets={categoryPets}
+        pets={
+          loading
+            ? Array(3).fill(null).map((_, i) => (
+                <div key={i} className="p-4 border rounded-lg shadow">
+                  <Skeleton height={180} />
+                  <Skeleton height={20} style={{ marginTop: 10 }} />
+                  <Skeleton width="80%" />
+                </div>
+              ))
+            : categoryPets
+        }
       />
       <CallToAction />
       <AboutUs />
