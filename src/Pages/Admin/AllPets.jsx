@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import Modal from "react-modal";
 import { useNavigate } from "react-router";
 import { usePagination, useSortBy, useTable } from "react-table";
+import { ArrowLeft } from "lucide-react";
 
 Modal.setAppElement("#root");
 
@@ -17,7 +18,9 @@ function AllPets() {
   useEffect(() => {
     const fetchPets = async () => {
       try {
-        const res = await axios.get(`https://pet-adoption-platform-server-side.vercel.app/pets`);
+        const res = await axios.get(
+          `https://pet-adoption-platform-server-side.vercel.app/pets`
+        );
         setPets(res.data.pets || res.data || []);
       } catch {
         setErrorMsg("Failed to fetch pets");
@@ -30,7 +33,10 @@ function AllPets() {
 
   const handleAdopt = async (id) => {
     try {
-      await axios.patch(`https://pet-adoption-platform-server-side.vercel.app/pets/${id}`, { adopted: true });
+      await axios.patch(
+        `https://pet-adoption-platform-server-side.vercel.app/pets/${id}`,
+        { adopted: true }
+      );
       setPets((prev) =>
         prev.map((pet) => (pet._id === id ? { ...pet, adopted: true } : pet))
       );
@@ -41,7 +47,10 @@ function AllPets() {
 
   const handleUnadopt = async (id) => {
     try {
-      await axios.patch(`https://pet-adoption-platform-server-side.vercel.app/pets/${id}`, { adopted: false });
+      await axios.patch(
+        `https://pet-adoption-platform-server-side.vercel.app/pets/${id}`,
+        { adopted: false }
+      );
       setPets((prev) =>
         prev.map((pet) => (pet._id === id ? { ...pet, adopted: false } : pet))
       );
@@ -53,7 +62,9 @@ function AllPets() {
   const handleDelete = async () => {
     if (!petToDelete) return;
     try {
-      await axios.delete(`https://pet-adoption-platform-server-side.vercel.app/pets/${petToDelete._id}`);
+      await axios.delete(
+        `https://pet-adoption-platform-server-side.vercel.app/pets/${petToDelete._id}`
+      );
       setPets((prev) => prev.filter((pet) => pet._id !== petToDelete._id));
       setModalIsOpen(false);
       setPetToDelete(null);
@@ -83,26 +94,42 @@ function AllPets() {
         Header: "Image",
         accessor: "petImage",
         Cell: ({ value }) => (
-          <img src={value} alt="pet" className="w-16 h-16 object-cover rounded" />
+          <img
+            src={value}
+            alt="pet"
+            className="w-14 h-14 object-cover rounded-md border"
+          />
         ),
       },
       {
         Header: "Status",
         accessor: "adopted",
-        Cell: ({ value }) => (value ? "Adopted" : "Not Adopted"),
+        Cell: ({ value }) => (
+          <span
+            className={`px-2 py-1 rounded-full text-xs font-medium ${
+              value
+                ? "bg-green-100 text-green-700"
+                : "bg-yellow-100 text-yellow-700"
+            }`}
+          >
+            {value ? "Adopted" : "Not Adopted"}
+          </span>
+        ),
       },
       {
         Header: "Actions",
         Cell: ({ row }) => (
           <div className="flex flex-wrap gap-2">
             <button
-              className="bg-yellow-400 px-2 py-1 rounded hover:bg-yellow-500 text-sm"
-              onClick={() => navigate(`/dashboard/update-pet/${row.original._id}`)}
+              className="px-3 py-1 rounded-md bg-blue-500 text-white text-sm hover:bg-blue-600"
+              onClick={() =>
+                navigate(`/dashboard/update-pet/${row.original._id}`)
+              }
             >
               Update
             </button>
             <button
-              className="bg-red-500 px-2 py-1 rounded hover:bg-red-600 text-sm text-white"
+              className="px-3 py-1 rounded-md bg-red-500 text-white text-sm hover:bg-red-600"
               onClick={() => {
                 setPetToDelete(row.original);
                 setModalIsOpen(true);
@@ -112,17 +139,17 @@ function AllPets() {
             </button>
             {!row.original.adopted ? (
               <button
-                className="bg-green-600 px-2 py-1 rounded hover:bg-green-700 text-sm text-white"
+                className="px-3 py-1 rounded-md bg-green-600 text-white text-sm hover:bg-green-700"
                 onClick={() => handleAdopt(row.original._id)}
               >
-                Mark as Adopted
+                Mark Adopted
               </button>
             ) : (
               <button
-                className="bg-gray-600 px-2 py-1 rounded hover:bg-gray-700 text-sm text-white"
+                className="px-3 py-1 rounded-md bg-gray-600 text-white text-sm hover:bg-gray-700"
                 onClick={() => handleUnadopt(row.original._id)}
               >
-                Mark as Not Adopted
+                Mark Not Adopted
               </button>
             )}
           </div>
@@ -153,31 +180,51 @@ function AllPets() {
     usePagination
   );
 
-  if (loading) return <p className="text-center p-4 text-lg">Loading pets...</p>;
+  if (loading)
+    return (
+      <p className="text-center p-8 text-lg text-gray-600">Loading pets...</p>
+    );
 
   return (
-    <div className="max-w-7xl mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4 text-center sm:text-left">All Pets</h1>
-      {errorMsg && <p className="text-red-600 mb-2">{errorMsg}</p>}
+    <div className="max-w-7xl mx-auto p-6">
+      {/* Back to Profile */}
+      <div className="flex items-center mb-6">
+        <button
+          onClick={() => navigate("/dashboard/profile")}
+          className="flex items-center gap-2 px-4 py-2 bg-gray-800 text-white rounded-lg shadow hover:bg-gray-900 transition"
+        >
+          <ArrowLeft size={18} /> Back to Profile
+        </button>
+      </div>
+
+      {errorMsg && (
+        <p className="text-red-600 bg-red-100 px-3 py-2 rounded mb-4">
+          {errorMsg}
+        </p>
+      )}
 
       {/* Responsive Table */}
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto bg-white dark:bg-gray-800 rounded-lg shadow-md">
         <table
           {...getTableProps()}
-          className="min-w-[700px] w-full border border-gray-300 text-sm sm:text-base"
+          className="min-w-[750px] w-full text-sm text-gray-800 dark:text-gray-200"
         >
-          <thead className="bg-gray-100">
+          <thead className="bg-gray-100 dark:bg-gray-700">
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
                 {headerGroup.headers.map((column) => (
                   <th
                     {...column.getHeaderProps(column.getSortByToggleProps())}
                     key={column.id}
-                    className="border px-3 sm:px-4 py-2 text-left cursor-pointer select-none"
+                    className="px-4 py-3 text-left font-semibold text-gray-700 dark:text-gray-100 cursor-pointer select-none"
                   >
                     {column.render("Header")}
                     <span>
-                      {column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : ""}
+                      {column.isSorted
+                        ? column.isSortedDesc
+                          ? " 🔽"
+                          : " 🔼"
+                        : ""}
                     </span>
                   </th>
                 ))}
@@ -187,7 +234,10 @@ function AllPets() {
           <tbody {...getTableBodyProps()}>
             {page.length === 0 ? (
               <tr>
-                <td colSpan={columns.length} className="text-center py-4">
+                <td
+                  colSpan={columns.length}
+                  className="text-center py-6 text-gray-500"
+                >
                   No pets found.
                 </td>
               </tr>
@@ -195,12 +245,16 @@ function AllPets() {
               page.map((row) => {
                 prepareRow(row);
                 return (
-                  <tr {...row.getRowProps()} key={row.original._id} className="border-t">
+                  <tr
+                    {...row.getRowProps()}
+                    key={row.original._id}
+                    className="border-t border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition"
+                  >
                     {row.cells.map((cell) => (
                       <td
                         {...cell.getCellProps()}
                         key={cell.column.id}
-                        className="border px-3 sm:px-4 py-2 break-words align-middle"
+                        className="px-4 py-3 align-middle"
                       >
                         {cell.render("Cell")}
                       </td>
@@ -214,7 +268,7 @@ function AllPets() {
       </div>
 
       {/* Pagination */}
-      <div className="flex flex-col sm:flex-row justify-between items-center mt-4 gap-4">
+      <div className="flex flex-col sm:flex-row justify-between items-center mt-6 gap-4">
         <div className="space-x-2">
           <button
             onClick={() => gotoPage(0)}
@@ -246,7 +300,7 @@ function AllPets() {
           </button>
         </div>
         <span className="text-sm">
-          Page <strong>{pageIndex + 1} of {pageOptions.length}</strong>
+          Page <strong>{pageIndex + 1}</strong> of {pageOptions.length}
         </span>
         <select
           value={pageSize}
@@ -261,28 +315,33 @@ function AllPets() {
         </select>
       </div>
 
-      {/* Modal */}
+      {/* Delete Modal */}
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={() => setModalIsOpen(false)}
         contentLabel="Confirm Delete"
-        className="bg-white w-[90%] max-w-md mx-auto p-6 rounded shadow-lg outline-none"
+        className="bg-white dark:bg-gray-900 w-[90%] max-w-md mx-auto p-6 rounded-lg shadow-lg outline-none"
         overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center px-2"
       >
-        <h2 className="text-xl font-bold mb-4">Confirm Delete</h2>
-        <p>Are you sure you want to delete the pet "{petToDelete?.name}"?</p>
+        <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">
+          Confirm Delete
+        </h2>
+        <p className="text-gray-700 dark:text-gray-300">
+          Are you sure you want to delete{" "}
+          <span className="font-semibold">{petToDelete?.name}</span>?
+        </p>
         <div className="mt-6 flex flex-col sm:flex-row justify-end gap-4">
           <button
             onClick={() => setModalIsOpen(false)}
-            className="px-4 py-2 border rounded hover:bg-gray-100"
+            className="px-4 py-2 border rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition"
           >
             No
           </button>
           <button
             onClick={handleDelete}
-            className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+            className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition"
           >
-            Yes
+            Yes, Delete
           </button>
         </div>
       </Modal>
