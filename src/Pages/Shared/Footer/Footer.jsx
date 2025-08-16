@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import LogoSection from "../Logo Section/LogoSection";
 
 const socialLinks = [
@@ -32,58 +32,124 @@ const socialLinks = [
 ];
 
 const Footer = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
-    <footer className="bg-gray-900 text-gray-300 py-8 px-6">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-        
-        {/* Logo Section */}
-        <LogoSection></LogoSection>
+    <>
+      <footer className="bg-gray-900 text-gray-300 py-8 px-6">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+          
+          {/* Logo Section */}
+          <LogoSection />
 
-        {/* Social Media Links */}
-        <div className="flex gap-6 text-gray-400">
-          {socialLinks.map(({ name, href, svgPath, color }) => (
-            <a
-              key={name}
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={name}
-              className={`transition-colors duration-300 ${color}`}
-            >
-              <svg
-                className="w-6 h-6"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
+          {/* Social Media Links */}
+          <div className="flex gap-6 text-gray-400">
+            {socialLinks.map(({ name, href, svgPath, color }) => (
+              <a
+                key={name}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={name}
+                className={`transition-colors duration-300 ${color}`}
               >
-                <path d={svgPath} />
-              </svg>
+                <svg
+                  className="w-6 h-6"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d={svgPath} />
+                </svg>
+              </a>
+            ))}
+          </div>
+
+          {/* Footer Links */}
+          <nav className="flex gap-6 text-sm text-gray-400">
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="hover:text-pink-400 transition"
+            >
+              Terms & Conditions
+            </button>
+            <a href="/pets" className="hover:text-pink-400 transition">
+              Adopt
             </a>
-          ))}
-        </div>
+            <a href="/donation-campaigns" className="hover:text-pink-400 transition">
+              Donate
+            </a>
+            <a href="/contact-us" className="hover:text-pink-400 transition">
+              Contact
+            </a>
+          </nav>
 
-        {/* Footer Links */}
-        <nav className="flex gap-6 text-sm text-gray-400">
-          <a href="/about" className="hover:text-pink-400 transition">
-            About Us
-          </a>
-          <a href="/adopt" className="hover:text-pink-400 transition">
-            Adopt
-          </a>
-          <a href="/donate" className="hover:text-pink-400 transition">
-            Donate
-          </a>
-          <a href="/contact" className="hover:text-pink-400 transition">
-            Contact
-          </a>
-        </nav>
-
-        {/* Copyright */}
-        <div className="text-xs text-gray-500 select-none mt-6 md:mt-0">
-          &copy; {new Date().getFullYear()} PetHaven. All rights reserved.
+          {/* Copyright */}
+          <div className="text-xs text-gray-500 select-none mt-6 md:mt-0">
+            &copy; {new Date().getFullYear()} PetHaven. All rights reserved.
+          </div>
         </div>
-      </div>
-    </footer>
+      </footer>
+
+      {/* Terms & Conditions Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 relative">
+            
+            {/* Close Button */}
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="absolute top-4 right-4 text-gray-500 hover:text-red-500 transition"
+            >
+              ✕
+            </button>
+
+            <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+              Terms & Conditions
+            </h2>
+
+            <div className="text-gray-700 dark:text-gray-300 text-sm space-y-4">
+              <p>
+                Welcome to <span className="font-semibold">PetHaven</span>. By using our
+                website and services, you agree to the following terms and conditions.
+              </p>
+              <p>
+                1. <strong>Adoption Policy:</strong> All pet adoptions are subject to
+                approval and must comply with our welfare standards.
+              </p>
+              <p>
+                2. <strong>Donations:</strong> Contributions are non-refundable and will
+                be used solely for pet care, rescue, and shelter maintenance.
+              </p>
+              <p>
+                3. <strong>User Conduct:</strong> You agree not to misuse or abuse our
+                services, and respect the rights of other users.
+              </p>
+              <p>
+                4. <strong>Liability:</strong> PetHaven is not responsible for any
+                damages, losses, or injuries resulting from pet adoption or interactions.
+              </p>
+              <p>
+                5. <strong>Changes:</strong> Terms may be updated at any time. Continued
+                use of our services means you accept the new terms.
+              </p>
+              <p>
+                Thank you for supporting PetHaven and helping pets find loving homes!
+              </p>
+            </div>
+
+            <div className="mt-6 flex justify-end">
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

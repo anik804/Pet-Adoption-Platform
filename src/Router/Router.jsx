@@ -35,9 +35,9 @@ const router = createBrowserRouter([
         Component: Home,
       },
       {
-  path: "*",
-  Component: Error,
-},
+        path: "*",
+        Component: Error,
+      },
 
       {
         path: "pets",
@@ -58,7 +58,6 @@ const router = createBrowserRouter([
       {
         path: "contact-us",
         Component: ContactUs,
-
       },
       {
         path: "dashboard",
@@ -70,7 +69,7 @@ const router = createBrowserRouter([
           },
           {
             path: "profile",
-            element: <UserProfile></UserProfile>
+            element: <UserProfile></UserProfile>,
           },
           {
             path: "my-added-pets",
@@ -95,7 +94,7 @@ const router = createBrowserRouter([
           },
           {
             path: "my-donations",
-            element: <MyDonations></MyDonations>
+            element: <MyDonations></MyDonations>,
           },
         ],
       },
