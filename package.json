@@ -29,7 +29,7 @@
     "emailjs-com": "^3.2.0",
     "firebase": "^11.10.0",
     "formik": "^2.4.6",
-    "framer-motion": "^12.23.0",
+    "framer-motion": "^12.23.12",
     "lottie-react": "^2.4.1",
     "lucide-react": "^0.539.0",
     "motion": "^12.23.0",
