@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router";
+import Swal from "sweetalert2";
 import bg from "../../../assets/login_bg.jpg";
 import useAuth from "../../../Hooks/useAuth";
 import LogoSection from "../../Shared/Logo Section/LogoSection";
@@ -19,27 +20,28 @@ const Login = () => {
 
   const saveUserToBackend = async (user) => {
     try {
-      console.log('Saving user to backend:', user.email);
-      const response = await fetch(`https://pet-adoption-platform-server-side.vercel.app/users/${user.email}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: user.email,
-          displayName: user.displayName || '',
-          photoURL: user.photoURL || '',
-          role: 'user',
-        }),
-      });
+      console.log("Saving user to backend:", user.email);
+      const response = await fetch(
+        `https://pet-adoption-platform-server-side.vercel.app/users/${user.email}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: user.email,
+            displayName: user.displayName || "",
+            photoURL: user.photoURL || "",
+            role: "user",
+          }),
+        }
+      );
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('Failed to save user, server responded with:', errorText);
+        console.error("Failed to save user, server responded with:", errorText);
       } else {
-        console.log('User saved successfully');
+        console.log("User saved successfully");
       }
     } catch (error) {
-      console.error('Failed to save user:', error);
+      console.error("Failed to save user:", error);
     }
   };
 
@@ -48,11 +50,28 @@ const Login = () => {
       .then(async (result) => {
         if (result.user) {
           await saveUserToBackend(result.user);
+
+          // ✅ SweetAlert success
+          Swal.fire({
+            icon: "success",
+            title: "Login Successful!",
+            text: `Welcome back, ${result.user.displayName || "User"} 🎉`,
+            confirmButtonColor: "#f59e0b",
+          }).then(() => {
+            navigate(from, { replace: true });
+          });
         }
-        navigate(from, { replace: true });
       })
       .catch((error) => {
         console.error("Login failed:", error);
+
+        // ✅ SweetAlert error
+        Swal.fire({
+          icon: "error",
+          title: "Login Failed",
+          text: error.message,
+          confirmButtonColor: "#f59e0b",
+        });
       });
   };
 
@@ -69,7 +88,10 @@ const Login = () => {
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           {/* Email */}
           <div className="mb-6">
-            <label htmlFor="email" className="block text-gray-700 font-medium mb-2">
+            <label
+              htmlFor="email"
+              className="block text-gray-700 font-medium mb-2"
+            >
               Email
             </label>
             <input
@@ -88,13 +110,18 @@ const Login = () => {
               }`}
             />
             {errors.email && (
-              <p className="text-red-600 mt-1 text-sm">{errors.email.message}</p>
+              <p className="text-red-600 mt-1 text-sm">
+                {errors.email.message}
+              </p>
             )}
           </div>
 
           {/* Password */}
           <div className="mb-6">
-            <label htmlFor="password" className="block text-gray-700 font-medium mb-2">
+            <label
+              htmlFor="password"
+              className="block text-gray-700 font-medium mb-2"
+            >
               Password
             </label>
             <input
@@ -114,14 +141,19 @@ const Login = () => {
               }`}
             />
             {errors.password && (
-              <p className="text-red-600 mt-1 text-sm">{errors.password.message}</p>
+              <p className="text-red-600 mt-1 text-sm">
+                {errors.password.message}
+              </p>
             )}
           </div>
 
           {/* Register Link */}
           <p className="text-center text-gray-600 mb-6">
             Don't have an account?{" "}
-            <Link to="/register" className="text-amber-600 font-semibold hover:underline">
+            <Link
+              to="/register"
+              className="text-amber-600 font-semibold hover:underline"
+            >
               Register
             </Link>
           </p>
@@ -138,6 +170,14 @@ const Login = () => {
         {/* Social Login */}
         <div className="mt-8">
           <SocialLogin />
+        </div>
+        <div className="mt-4 text-center">
+          <button
+            onClick={() => navigate("/")}
+            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded transition"
+          >
+            Go Back to Home
+          </button>
         </div>
       </div>
     </div>

@@ -62,17 +62,20 @@ const Register = () => {
         });
 
         // ✅ Save to DB
-        await fetch(`https://pet-adoption-platform-server-side.vercel.app/users/${result.user.email}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: result.user.email,
-            name: data.fullName,
-            photo: imageURL,
-          }),
-        });
+        await fetch(
+          `https://pet-adoption-platform-server-side.vercel.app/users/${result.user.email}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: result.user.email,
+              name: data.fullName,
+              photo: imageURL,
+            }),
+          }
+        );
 
         // ✅ Success alert
         Swal.fire({
@@ -103,7 +106,10 @@ const Register = () => {
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           {/* Full Name */}
           <div className="mb-6">
-            <label htmlFor="fullName" className="block text-gray-700 font-medium mb-2">
+            <label
+              htmlFor="fullName"
+              className="block text-gray-700 font-medium mb-2"
+            >
               Full Name
             </label>
             <input
@@ -116,13 +122,18 @@ const Register = () => {
               }`}
             />
             {errors.fullName && (
-              <p className="text-red-600 mt-1 text-sm">{errors.fullName.message}</p>
+              <p className="text-red-600 mt-1 text-sm">
+                {errors.fullName.message}
+              </p>
             )}
           </div>
 
           {/* Email */}
           <div className="mb-6">
-            <label htmlFor="email" className="block text-gray-700 font-medium mb-2">
+            <label
+              htmlFor="email"
+              className="block text-gray-700 font-medium mb-2"
+            >
               Email
             </label>
             <input
@@ -141,13 +152,18 @@ const Register = () => {
               }`}
             />
             {errors.email && (
-              <p className="text-red-600 mt-1 text-sm">{errors.email.message}</p>
+              <p className="text-red-600 mt-1 text-sm">
+                {errors.email.message}
+              </p>
             )}
           </div>
 
           {/* Password */}
           <div className="mb-6">
-            <label htmlFor="password" className="block text-gray-700 font-medium mb-2">
+            <label
+              htmlFor="password"
+              className="block text-gray-700 font-medium mb-2"
+            >
               Password
             </label>
             <input
@@ -167,13 +183,17 @@ const Register = () => {
               }`}
             />
             {errors.password && (
-              <p className="text-red-600 mt-1 text-sm">{errors.password.message}</p>
+              <p className="text-red-600 mt-1 text-sm">
+                {errors.password.message}
+              </p>
             )}
           </div>
 
           {/* Image Upload Type */}
           <div className="mb-4">
-            <p className="text-gray-700 font-medium mb-2">Choose Image Input Method</p>
+            <p className="text-gray-700 font-medium mb-2">
+              Choose Image Input Method
+            </p>
             <div className="flex space-x-6">
               <label className="cursor-pointer flex items-center">
                 <input
@@ -201,7 +221,10 @@ const Register = () => {
           {/* Image Input */}
           {imageType === "file" ? (
             <div className="mb-6">
-              <label htmlFor="imageFile" className="block text-gray-700 font-medium mb-2">
+              <label
+                htmlFor="imageFile"
+                className="block text-gray-700 font-medium mb-2"
+              >
                 Profile Image File
               </label>
               <input
@@ -216,12 +239,17 @@ const Register = () => {
                 accept="image/*"
               />
               {errors.imageFile && (
-                <p className="text-red-600 mt-1 text-sm">{errors.imageFile.message}</p>
+                <p className="text-red-600 mt-1 text-sm">
+                  {errors.imageFile.message}
+                </p>
               )}
             </div>
           ) : (
             <div className="mb-6">
-              <label htmlFor="imageURL" className="block text-gray-700 font-medium mb-2">
+              <label
+                htmlFor="imageURL"
+                className="block text-gray-700 font-medium mb-2"
+              >
                 Profile Image URL
               </label>
               <input
@@ -240,14 +268,18 @@ const Register = () => {
                 }`}
               />
               {errors.imageURL && (
-                <p className="text-red-600 mt-1 text-sm">{errors.imageURL.message}</p>
+                <p className="text-red-600 mt-1 text-sm">
+                  {errors.imageURL.message}
+                </p>
               )}
             </div>
           )}
 
           {/* Auth Error */}
           {authError && (
-            <p className="text-red-600 text-center font-semibold mb-4">{authError}</p>
+            <p className="text-red-600 text-center font-semibold mb-4">
+              {authError}
+            </p>
           )}
 
           <button
@@ -260,13 +292,24 @@ const Register = () => {
 
         <p className="mt-6 text-center text-gray-600">
           Already have an account?{" "}
-          <Link to="/login" className="text-amber-600 font-semibold hover:underline">
+          <Link
+            to="/login"
+            className="text-amber-600 font-semibold hover:underline"
+          >
             Login
           </Link>
         </p>
 
         <div className="mt-8">
           <SocialLogin />
+        </div>
+        <div className="mt-4 text-center">
+          <button
+            onClick={() => navigate("/")}
+            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded transition"
+          >
+            Go Back to Home
+          </button>
         </div>
       </div>
     </div>
