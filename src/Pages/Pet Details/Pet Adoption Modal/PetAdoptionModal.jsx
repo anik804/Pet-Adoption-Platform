@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 const AdoptModal = ({ pet, user, onClose }) => {
   const [formData, setFormData] = useState({
@@ -22,12 +23,27 @@ const AdoptModal = ({ pet, user, onClose }) => {
     };
 
     try {
-      await axios.post("https://pet-adoption-platform-server-side.vercel.app/adoptions", adoptionData);
-      alert("Adoption request submitted successfully!");
-      onClose();
+      await axios.post(
+        "https://pet-adoption-platform-server-side.vercel.app/adoptions",
+        adoptionData
+      );
+
+      Swal.fire({
+        title: "Success!",
+        text: "Adoption request submitted successfully 🎉",
+        icon: "success",
+        confirmButtonColor: "#16a34a", // green
+      }).then(() => {
+        onClose();
+      });
     } catch (error) {
       console.error("Adoption failed:", error);
-      alert("Something went wrong. Please try again.");
+      Swal.fire({
+        title: "Oops!",
+        text: "Something went wrong. Please try again.",
+        icon: "error",
+        confirmButtonColor: "#dc2626", // red
+      });
     }
   };
 
@@ -59,8 +75,6 @@ const AdoptModal = ({ pet, user, onClose }) => {
               className="w-full border px-4 py-2 rounded bg-gray-100"
             />
           </div>
-
-          {/* Pet Info (not editable, not shown in form fields) */}
 
           {/* Phone */}
           <div>
