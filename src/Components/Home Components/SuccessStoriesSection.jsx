@@ -143,53 +143,73 @@ const SuccessStories = () => {
         {user ? (
           <>
             <button
-              className="bg-pink-600 hover:bg-pink-700 text-white font-semibold py-3 px-8 rounded-md transition-colors duration-300"
+              className="bg-pink-600 hover:bg-pink-700 text-white font-semibold py-3 px-8 rounded-md transition-transform duration-300 hover:scale-105"
               onClick={() => setShowForm(true)}
             >
               Share Your Story
             </button>
+
+            {/* Modal */}
             {showForm && (
-              <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
-                <div className="bg-gray-800 p-6 rounded-lg max-w-md w-full">
-                  <h3 className="text-white text-2xl mb-4">Share Your Story</h3>
-                  <form onSubmit={handleSubmit}>
-                    <label className="block mb-2 text-white font-semibold">
-                      Name
+              <motion.div
+                className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <motion.div
+                  className="bg-gradient-to-br from-gray-900/80 to-gray-800/80 backdrop-blur-md rounded-2xl w-full max-w-md p-6 shadow-2xl relative"
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.8, opacity: 0 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                >
+                  <h3 className="text-white text-2xl font-bold mb-6 text-center">
+                    Share Your Story
+                  </h3>
+
+                  <form onSubmit={handleSubmit} className="space-y-4">
+                    <label className="block">
+                      <span className="text-white font-semibold mb-1">Name</span>
                       <input
                         type="text"
                         name="name"
                         value={formData.name}
                         onChange={handleInputChange}
-                        className="w-full p-2 rounded mt-1 text-black"
+                        className="w-full p-3 rounded-lg bg-gray-100 text-black focus:outline-none focus:ring-2 focus:ring-pink-500"
                         required
                       />
                     </label>
-                    <label className="block mb-2 text-white font-semibold">
-                      Story
+
+                    <label className="block">
+                      <span className="text-white font-semibold mb-1">Story</span>
                       <textarea
                         name="story"
                         value={formData.story}
                         onChange={handleInputChange}
-                        className="w-full p-2 rounded mt-1 text-black"
                         rows="4"
+                        className="w-full p-3 rounded-lg bg-gray-100 text-black focus:outline-none focus:ring-2 focus:ring-pink-500"
                         required
                       />
                     </label>
-                    <label className="block mb-4 text-white font-semibold">
-                      Image URL (optional)
+
+                    <label className="block">
+                      <span className="text-white font-semibold mb-1">Image URL (optional)</span>
                       <input
                         type="text"
                         name="image"
                         value={formData.image}
                         onChange={handleInputChange}
-                        className="w-full p-2 rounded mt-1 text-black"
+                        className="w-full p-3 rounded-lg bg-gray-100 text-black focus:outline-none focus:ring-2 focus:ring-pink-500"
                       />
                     </label>
-                    {error && <p className="text-red-500 mb-2">{error}</p>}
-                    <div className="flex justify-end space-x-4">
+
+                    {error && <p className="text-red-500 text-sm">{error}</p>}
+
+                    <div className="flex justify-end gap-4 mt-4">
                       <button
                         type="button"
-                        className="bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded"
+                        className="bg-gray-600 hover:bg-gray-700 text-white py-2 px-6 rounded-lg transition-colors duration-300"
                         onClick={() => {
                           setShowForm(false);
                           setError(null);
@@ -200,15 +220,38 @@ const SuccessStories = () => {
                       </button>
                       <button
                         type="submit"
-                        className="bg-pink-600 hover:bg-pink-700 text-white py-2 px-4 rounded"
+                        className="bg-pink-600 hover:bg-pink-700 text-white py-2 px-6 rounded-lg transition-colors duration-300 flex items-center justify-center"
                         disabled={loading}
                       >
-                        {loading ? "Submitting..." : "Submit"}
+                        {loading ? (
+                          <svg
+                            className="animate-spin h-5 w-5 mr-2 text-white"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            ></circle>
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8h4l-3 3 3 3h-4z"
+                            ></path>
+                          </svg>
+                        ) : (
+                          "Submit"
+                        )}
                       </button>
                     </div>
                   </form>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             )}
           </>
         ) : (
