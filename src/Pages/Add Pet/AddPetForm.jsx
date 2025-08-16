@@ -2,7 +2,7 @@ import axios from "axios";
 import { useFormik } from "formik";
 import { useState } from "react";
 import Select from "react-select";
-import Swal from "sweetalert2"; // ✅ Import SweetAlert2
+import Swal from "sweetalert2";
 import * as Yup from "yup";
 import useAuth from "../../Hooks/useAuth";
 
@@ -70,7 +70,6 @@ function AddPetForm({ initialValues, onSubmit }) {
               createdAt: new Date(),
             });
 
-            // ✅ SweetAlert on success
             Swal.fire({
               icon: "success",
               title: "Pet Added!",
@@ -119,162 +118,185 @@ function AddPetForm({ initialValues, onSubmit }) {
   ];
 
   return (
-    <form
-      onSubmit={formik.handleSubmit}
-      className="space-y-6 max-w-3xl mx-auto bg-white shadow-lg rounded-lg md:p-8"
-    >
-      <h2 className="text-xl md:text-2xl font-bold text-center">Add New Pet</h2>
+    <div className="max-w-4xl mx-auto px-4 py-10">
+      <div className="bg-white/90 backdrop-blur-lg shadow-2xl rounded-2xl p-6 md:p-10">
+        {/* Heading */}
+        <h2 className="text-3xl font-extrabold text-center mb-8 bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent">
+          🐾 Add a New Pet for Adoption
+        </h2>
 
-      {/* Pet Image */}
-      <div>
-        <label className="font-medium block mb-1">Pet Image</label>
-        <input type="file" accept="image/*" onChange={onImageChange} />
-        {uploading && <p className="text-sm text-gray-500 mt-1">Uploading...</p>}
-        {formik.values.petImage && (
-          <img
-            src={formik.values.petImage}
-            alt="preview"
-            className="mt-3 w-28 h-28 rounded-md object-cover border"
-          />
-        )}
-        {formik.touched.petImage && formik.errors.petImage && (
-          <div className="text-red-500 text-sm mt-1">{formik.errors.petImage}</div>
-        )}
-      </div>
+        {/* Form */}
+        <form onSubmit={formik.handleSubmit} className="space-y-6">
+          {/* Pet Image */}
+          <div>
+            <label className="block font-semibold mb-1">Pet Image</label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={onImageChange}
+              className="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4
+                file:rounded-lg file:border-0
+                file:text-sm file:font-semibold
+                file:bg-gradient-to-r file:from-pink-500 file:to-purple-600 file:text-white
+                hover:file:opacity-90 transition"
+            />
+            {uploading && <p className="text-sm text-gray-500 mt-1">Uploading...</p>}
+            {formik.values.petImage && (
+              <img
+                src={formik.values.petImage}
+                alt="preview"
+                className="mt-3 w-28 h-28 rounded-lg object-cover border shadow-md"
+              />
+            )}
+            {formik.touched.petImage && formik.errors.petImage && (
+              <p className="text-red-500 text-sm mt-1">{formik.errors.petImage}</p>
+            )}
+          </div>
 
-      {/* Pet Name */}
-      <div>
-        <label className="font-medium block mb-1">Pet Name</label>
-        <input
-          type="text"
-          name="petName"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.petName}
-          className="w-full border rounded px-3 py-2"
-        />
-        {formik.touched.petName && formik.errors.petName && (
-          <div className="text-red-500 text-sm mt-1">{formik.errors.petName}</div>
-        )}
-      </div>
+          {/* Pet Name */}
+          <div>
+            <label className="block font-semibold mb-1">Pet Name</label>
+            <input
+              type="text"
+              name="petName"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.petName}
+              className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-pink-400 outline-none transition"
+              placeholder="Enter pet's name"
+            />
+            {formik.touched.petName && formik.errors.petName && (
+              <p className="text-red-500 text-sm mt-1">{formik.errors.petName}</p>
+            )}
+          </div>
 
-      {/* Pet Age */}
-      <div>
-        <label className="font-medium block mb-1">Pet Age</label>
-        <input
-          type="number"
-          name="petAge"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.petAge}
-          className="w-full border rounded px-3 py-2"
-        />
-        {formik.touched.petAge && formik.errors.petAge && (
-          <div className="text-red-500 text-sm mt-1">{formik.errors.petAge}</div>
-        )}
-      </div>
+          {/* Pet Age */}
+          <div>
+            <label className="block font-semibold mb-1">Pet Age</label>
+            <input
+              type="number"
+              name="petAge"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.petAge}
+              className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-pink-400 outline-none transition"
+              placeholder="Enter age in years"
+            />
+            {formik.touched.petAge && formik.errors.petAge && (
+              <p className="text-red-500 text-sm mt-1">{formik.errors.petAge}</p>
+            )}
+          </div>
 
-      {/* Pet Category */}
-      <div>
-        <label className="font-medium block mb-1">Pet Category</label>
-        <Select
-          options={categories}
-          value={formik.values.petCategory}
-          onChange={(val) => formik.setFieldValue("petCategory", val)}
-          onBlur={() => formik.setFieldTouched("petCategory", true)}
-        />
-        {formik.touched.petCategory && formik.errors.petCategory && (
-          <div className="text-red-500 text-sm mt-1">{formik.errors.petCategory}</div>
-        )}
-      </div>
+          {/* Pet Category */}
+          <div>
+            <label className="block font-semibold mb-1">Category</label>
+            <Select
+              options={categories}
+              value={formik.values.petCategory}
+              onChange={(val) => formik.setFieldValue("petCategory", val)}
+              onBlur={() => formik.setFieldTouched("petCategory", true)}
+              className="text-sm"
+            />
+            {formik.touched.petCategory && formik.errors.petCategory && (
+              <p className="text-red-500 text-sm mt-1">{formik.errors.petCategory}</p>
+            )}
+          </div>
 
-      {/* Pet Location */}
-      <div>
-        <label className="font-medium block mb-1">Location</label>
-        <input
-          type="text"
-          name="petLocation"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.petLocation}
-          className="w-full border rounded px-3 py-2"
-        />
-        {formik.touched.petLocation && formik.errors.petLocation && (
-          <div className="text-red-500 text-sm mt-1">{formik.errors.petLocation}</div>
-        )}
-      </div>
+          {/* Location */}
+          <div>
+            <label className="block font-semibold mb-1">Location</label>
+            <input
+              type="text"
+              name="petLocation"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.petLocation}
+              className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-pink-400 outline-none transition"
+              placeholder="Enter location"
+            />
+            {formik.touched.petLocation && formik.errors.petLocation && (
+              <p className="text-red-500 text-sm mt-1">{formik.errors.petLocation}</p>
+            )}
+          </div>
 
-      {/* Pet Color */}
-      <div>
-        <label className="font-medium block mb-1">Color</label>
-        <input
-          type="text"
-          name="petColor"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.petColor}
-          className="w-full border rounded px-3 py-2"
-        />
-        {formik.touched.petColor && formik.errors.petColor && (
-          <div className="text-red-500 text-sm mt-1">{formik.errors.petColor}</div>
-        )}
-      </div>
+          {/* Color */}
+          <div>
+            <label className="block font-semibold mb-1">Color</label>
+            <input
+              type="text"
+              name="petColor"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.petColor}
+              className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-pink-400 outline-none transition"
+              placeholder="e.g. Brown, White, Golden"
+            />
+            {formik.touched.petColor && formik.errors.petColor && (
+              <p className="text-red-500 text-sm mt-1">{formik.errors.petColor}</p>
+            )}
+          </div>
 
-      {/* Pet Breed */}
-      <div>
-        <label className="font-medium block mb-1">Breed</label>
-        <input
-          type="text"
-          name="petBreed"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.petBreed}
-          className="w-full border rounded px-3 py-2"
-        />
-        {formik.touched.petBreed && formik.errors.petBreed && (
-          <div className="text-red-500 text-sm mt-1">{formik.errors.petBreed}</div>
-        )}
-      </div>
+          {/* Breed */}
+          <div>
+            <label className="block font-semibold mb-1">Breed</label>
+            <input
+              type="text"
+              name="petBreed"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.petBreed}
+              className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-pink-400 outline-none transition"
+              placeholder="Enter breed"
+            />
+            {formik.touched.petBreed && formik.errors.petBreed && (
+              <p className="text-red-500 text-sm mt-1">{formik.errors.petBreed}</p>
+            )}
+          </div>
 
-      {/* Short Description */}
-      <div>
-        <label className="font-medium block mb-1">Short Description</label>
-        <input
-          type="text"
-          name="shortDescription"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.shortDescription}
-          className="w-full border rounded px-3 py-2"
-        />
-        {formik.touched.shortDescription && formik.errors.shortDescription && (
-          <div className="text-red-500 text-sm mt-1">{formik.errors.shortDescription}</div>
-        )}
-      </div>
+          {/* Short Description */}
+          <div>
+            <label className="block font-semibold mb-1">Short Description</label>
+            <input
+              type="text"
+              name="shortDescription"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.shortDescription}
+              className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-pink-400 outline-none transition"
+              placeholder="Enter a short summary"
+            />
+            {formik.touched.shortDescription && formik.errors.shortDescription && (
+              <p className="text-red-500 text-sm mt-1">{formik.errors.shortDescription}</p>
+            )}
+          </div>
 
-      {/* Long Description */}
-      <div>
-        <label className="font-medium block mb-1">Long Description</label>
-        <div className="border rounded px-2 py-2">
-          <EditorContent editor={editor} />
-        </div>
-        {formik.touched.longDescription && formik.errors.longDescription && (
-          <div className="text-red-500 text-sm mt-1">{formik.errors.longDescription}</div>
-        )}
-      </div>
+          {/* Long Description */}
+          <div>
+            <label className="block font-semibold mb-1">Long Description</label>
+            <div className="border rounded-lg px-3 py-2 min-h-[150px] focus-within:ring-2 focus-within:ring-pink-400">
+              <EditorContent editor={editor} />
+            </div>
+            {formik.touched.longDescription && formik.errors.longDescription && (
+              <p className="text-red-500 text-sm mt-1">{formik.errors.longDescription}</p>
+            )}
+          </div>
 
-      {/* Submit Button */}
-      {errorMsg && <div className="text-red-600 text-sm">{errorMsg}</div>}
-      <div className="flex justify-center">
-        <button
-          type="submit"
-          disabled={formik.isSubmitting}
-          className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition"
-        >
-          {formik.isSubmitting ? "Submitting..." : "Add Pet"}
-        </button>
+          {/* Error */}
+          {errorMsg && <div className="text-red-600 text-sm">{errorMsg}</div>}
+
+          {/* Submit Button */}
+          <div className="flex justify-center">
+            <button
+              type="submit"
+              disabled={formik.isSubmitting}
+              className="w-full md:w-auto bg-gradient-to-r from-pink-500 to-purple-600 text-white px-8 py-3 rounded-lg shadow-lg hover:opacity-90 transition-all duration-300 font-semibold"
+            >
+              {formik.isSubmitting ? "Submitting..." : "➕ Add Pet"}
+            </button>
+          </div>
+        </form>
       </div>
-    </form>
+    </div>
   );
 }
 

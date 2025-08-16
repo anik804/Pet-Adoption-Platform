@@ -23,6 +23,7 @@ import AdoptionRequestsDashboard from "../Pages/Adoption Request/AdoptionRequest
 import MyDonations from "../Pages/Donation Campigns/MyDonations";
 import Error from "../Pages/Error Page/Error";
 import ContactUs from "../Pages/Contact Us/ContactUs";
+import UserProfile from "../Pages/Dashboard/UserProfile";
 
 const router = createBrowserRouter([
   {
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
           {
             path: "add-pet",
             element: <AddPet />,
+          },
+          {
+            path: "profile",
+            element: <UserProfile></UserProfile>
           },
           {
             path: "my-added-pets",
