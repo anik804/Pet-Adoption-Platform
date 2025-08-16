@@ -4,6 +4,7 @@ import Modal from "react-modal";
 import { useNavigate } from "react-router";
 import { usePagination, useSortBy, useTable } from "react-table";
 import { ArrowLeft } from "lucide-react";
+import { motion } from "framer-motion";
 
 Modal.setAppElement("#root");
 
@@ -180,10 +181,29 @@ function AllPets() {
     usePagination
   );
 
-  if (loading)
-    return (
-      <p className="text-center p-8 text-lg text-gray-600">Loading pets...</p>
-    );
+  // Skeleton Loader for table rows
+  const SkeletonRow = () => (
+    <tr className="animate-pulse">
+      <td className="px-4 py-3">
+        <div className="h-4 w-6 bg-gray-200 rounded"></div>
+      </td>
+      <td className="px-4 py-3">
+        <div className="h-4 w-24 bg-gray-200 rounded"></div>
+      </td>
+      <td className="px-4 py-3">
+        <div className="h-4 w-16 bg-gray-200 rounded"></div>
+      </td>
+      <td className="px-4 py-3">
+        <div className="w-14 h-14 bg-gray-200 rounded-md"></div>
+      </td>
+      <td className="px-4 py-3">
+        <div className="h-4 w-20 bg-gray-200 rounded"></div>
+      </td>
+      <td className="px-4 py-3">
+        <div className="h-8 w-32 bg-gray-200 rounded"></div>
+      </td>
+    </tr>
+  );
 
   return (
     <div className="max-w-7xl mx-auto p-6">
@@ -196,6 +216,28 @@ function AllPets() {
           <ArrowLeft size={18} /> Back to Profile
         </button>
       </div>
+
+      {/* Animated Heading */}
+      <motion.h2
+        className="text-4xl font-extrabold mb-10 text-center bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent"
+        initial={{ opacity: 0, y: -30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
+        <motion.span
+          animate={{
+            backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+          }}
+          transition={{
+            duration: 6,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+          className="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent inline-block bg-[length:200%_200%]"
+        >
+          All Pets Management
+        </motion.span>
+      </motion.h2>
 
       {errorMsg && (
         <p className="text-red-600 bg-red-100 px-3 py-2 rounded mb-4">
@@ -232,7 +274,9 @@ function AllPets() {
             ))}
           </thead>
           <tbody {...getTableBodyProps()}>
-            {page.length === 0 ? (
+            {loading ? (
+              Array.from({ length: 5 }).map((_, i) => <SkeletonRow key={i} />)
+            ) : page.length === 0 ? (
               <tr>
                 <td
                   colSpan={columns.length}
@@ -268,52 +312,54 @@ function AllPets() {
       </div>
 
       {/* Pagination */}
-      <div className="flex flex-col sm:flex-row justify-between items-center mt-6 gap-4">
-        <div className="space-x-2">
-          <button
-            onClick={() => gotoPage(0)}
-            disabled={!canPreviousPage}
-            className="px-2 py-1 border rounded disabled:opacity-50"
+      {!loading && (
+        <div className="flex flex-col sm:flex-row justify-between items-center mt-6 gap-4">
+          <div className="space-x-2">
+            <button
+              onClick={() => gotoPage(0)}
+              disabled={!canPreviousPage}
+              className="px-2 py-1 border rounded disabled:opacity-50"
+            >
+              {"<<"}
+            </button>
+            <button
+              onClick={() => previousPage()}
+              disabled={!canPreviousPage}
+              className="px-2 py-1 border rounded disabled:opacity-50"
+            >
+              {"<"}
+            </button>
+            <button
+              onClick={() => nextPage()}
+              disabled={!canNextPage}
+              className="px-2 py-1 border rounded disabled:opacity-50"
+            >
+              {">"}
+            </button>
+            <button
+              onClick={() => gotoPage(pageCount - 1)}
+              disabled={!canNextPage}
+              className="px-2 py-1 border rounded disabled:opacity-50"
+            >
+              {">>"}
+            </button>
+          </div>
+          <span className="text-sm">
+            Page <strong>{pageIndex + 1}</strong> of {pageOptions.length}
+          </span>
+          <select
+            value={pageSize}
+            onChange={(e) => setPageSize(Number(e.target.value))}
+            className="border rounded px-2 py-1 text-sm"
           >
-            {"<<"}
-          </button>
-          <button
-            onClick={() => previousPage()}
-            disabled={!canPreviousPage}
-            className="px-2 py-1 border rounded disabled:opacity-50"
-          >
-            {"<"}
-          </button>
-          <button
-            onClick={() => nextPage()}
-            disabled={!canNextPage}
-            className="px-2 py-1 border rounded disabled:opacity-50"
-          >
-            {">"}
-          </button>
-          <button
-            onClick={() => gotoPage(pageCount - 1)}
-            disabled={!canNextPage}
-            className="px-2 py-1 border rounded disabled:opacity-50"
-          >
-            {">>"}
-          </button>
+            {[10, 20, 30].map((size) => (
+              <option key={size} value={size}>
+                Show {size}
+              </option>
+            ))}
+          </select>
         </div>
-        <span className="text-sm">
-          Page <strong>{pageIndex + 1}</strong> of {pageOptions.length}
-        </span>
-        <select
-          value={pageSize}
-          onChange={(e) => setPageSize(Number(e.target.value))}
-          className="border rounded px-2 py-1 text-sm"
-        >
-          {[10, 20, 30].map((size) => (
-            <option key={size} value={size}>
-              Show {size}
-            </option>
-          ))}
-        </select>
-      </div>
+      )}
 
       {/* Delete Modal */}
       <Modal
