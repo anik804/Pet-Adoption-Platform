@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import Modal from "react-modal";
 import { useNavigate } from "react-router";
 import { usePagination, useSortBy, useTable } from "react-table";
+import { motion } from "framer-motion";
 
 Modal.setAppElement("#root");
 
@@ -17,7 +18,9 @@ function AllDonations() {
   useEffect(() => {
     const fetchCampaigns = async () => {
       try {
-        const res = await axios.get(`https://pet-adoption-platform-server-side.vercel.app/donation-campaigns`);
+        const res = await axios.get(
+          `https://pet-adoption-platform-server-side.vercel.app/donation-campaigns`
+        );
         setCampaigns(res.data.campaigns || res.data || []);
       } catch {
         setErrorMsg("Failed to fetch donation campaigns");
@@ -31,8 +34,12 @@ function AllDonations() {
   const handleDelete = async () => {
     if (!campaignToDelete) return;
     try {
-      await axios.delete(`https://pet-adoption-platform-server-side.vercel.app/donation-campaigns/${campaignToDelete._id}`);
-      setCampaigns((prev) => prev.filter((c) => c._id !== campaignToDelete._id));
+      await axios.delete(
+        `https://pet-adoption-platform-server-side.vercel.app/donation-campaigns/${campaignToDelete._id}`
+      );
+      setCampaigns((prev) =>
+        prev.filter((c) => c._id !== campaignToDelete._id)
+      );
       setModalIsOpen(false);
       setCampaignToDelete(null);
     } catch {
@@ -42,7 +49,10 @@ function AllDonations() {
 
   const handlePauseToggle = async (id, pause) => {
     try {
-      await axios.patch(`https://pet-adoption-platform-server-side.vercel.app/donation-campaigns/${id}`, { paused: pause });
+      await axios.patch(
+        `https://pet-adoption-platform-server-side.vercel.app/donation-campaigns/${id}`,
+        { paused: pause }
+      );
       setCampaigns((prev) =>
         prev.map((c) => (c._id === id ? { ...c, paused: pause } : c))
       );
@@ -84,12 +94,6 @@ function AllDonations() {
         Cell: ({ row }) => (
           <div className="flex flex-wrap gap-2">
             <button
-              className="bg-yellow-400 text-sm px-2 py-1 rounded hover:bg-yellow-500"
-              onClick={() => navigate(`/donation-campaigns/update/${row.original._id}`)}
-            >
-              Edit
-            </button>
-            <button
               className="bg-red-500 text-sm px-2 py-1 text-white rounded hover:bg-red-600"
               onClick={() => {
                 setCampaignToDelete(row.original);
@@ -117,7 +121,7 @@ function AllDonations() {
         ),
       },
     ],
-    [navigate]
+    []
   );
 
   const {
@@ -141,13 +145,57 @@ function AllDonations() {
     usePagination
   );
 
+  // ✅ Skeleton Loader
   if (loading) {
-    return <p className="text-center p-4 text-lg">Loading donation campaigns...</p>;
+    return (
+      <div className="max-w-7xl mx-auto p-4">
+        <div className="animate-pulse space-y-4">
+          <div className="h-8 bg-gray-300 rounded w-1/3"></div>
+          <div className="overflow-x-auto">
+            <table className="min-w-[700px] w-full border border-gray-300">
+              <thead>
+                <tr>
+                  {["S/N", "Pet Name", "Max Donation", "Donated Amount", "Status", "Actions"].map(
+                    (head) => (
+                      <th key={head} className="px-3 py-2 border bg-gray-200"></th>
+                    )
+                  )}
+                </tr>
+              </thead>
+              <tbody>
+                {[...Array(5)].map((_, idx) => (
+                  <tr key={idx} className="animate-pulse">
+                    {Array(6)
+                      .fill("")
+                      .map((_, i) => (
+                        <td key={i} className="border px-3 py-4">
+                          <div className="h-4 bg-gray-300 rounded"></div>
+                        </td>
+                      ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
     <div className="max-w-7xl mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4 text-center sm:text-left">All Donation Campaigns</h1>
+      <motion.h1
+        className="text-2xl font-bold mb-4 text-center sm:text-left"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{
+          opacity: 1,
+          y: 0,
+          color: ["#1E3A8A", "#9333EA", "#DC2626", "#16A34A", "#1E3A8A"],
+        }}
+        transition={{ duration: 3, repeat: Infinity }}
+      >
+        All Donation Campaigns
+      </motion.h1>
       {errorMsg && <p className="text-red-600 mb-2">{errorMsg}</p>}
 
       {/* Responsive Table */}
@@ -167,7 +215,11 @@ function AllDonations() {
                   >
                     {column.render("Header")}
                     <span>
-                      {column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : ""}
+                      {column.isSorted
+                        ? column.isSortedDesc
+                          ? " 🔽"
+                          : " 🔼"
+                        : ""}
                     </span>
                   </th>
                 ))}
@@ -185,7 +237,11 @@ function AllDonations() {
               page.map((row) => {
                 prepareRow(row);
                 return (
-                  <tr {...row.getRowProps()} key={row.original._id} className="border-t">
+                  <tr
+                    {...row.getRowProps()}
+                    key={row.original._id}
+                    className="border-t"
+                  >
                     {row.cells.map((cell) => (
                       <td
                         {...cell.getCellProps()}
@@ -203,8 +259,8 @@ function AllDonations() {
         </table>
       </div>
 
-      {/* Pagination */}
-      <div className="flex flex-col sm:flex-row justify-between items-center mt-4 gap-4">
+      {/* Pagination + Back Button */}
+      <div className="flex flex-col sm:flex-row justify-between items-center mt-6 gap-4">
         <div className="space-x-2">
           <button
             onClick={() => gotoPage(0)}
@@ -251,6 +307,19 @@ function AllDonations() {
         </select>
       </div>
 
+      {/* Back Button at Bottom */}
+      <div className="flex justify-center mt-6">
+<motion.button
+  onClick={() => navigate("/dashboard/profile")}
+  className="px-6 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700"
+  whileHover={{ scale: 1.05 }}
+  whileTap={{ scale: 0.95 }}
+>
+  ⬅ Back
+</motion.button>
+
+      </div>
+
       {/* Delete Modal */}
       <Modal
         isOpen={modalIsOpen}
@@ -260,7 +329,10 @@ function AllDonations() {
         overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center px-2"
       >
         <h2 className="text-xl font-bold mb-4">Confirm Delete</h2>
-        <p>Are you sure you want to delete the campaign "{campaignToDelete?.petName}"?</p>
+        <p>
+          Are you sure you want to delete the campaign "
+          {campaignToDelete?.petName}"?
+        </p>
         <div className="mt-6 flex flex-col sm:flex-row justify-end gap-4">
           <button
             onClick={() => setModalIsOpen(false)}
